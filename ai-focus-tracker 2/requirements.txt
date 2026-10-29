@@ -1,0 +1,7 @@
+psutil>=5.9
+pynput>=1.7
+pyobjc-framework-Cocoa>=10.0; sys_platform == "darwin"
+pyobjc-framework-Quartz>=10.0; sys_platform == "darwin"
+pytest>=8.0
+# added in later weeks:
+# pandas, scikit-learn, hmmlearn, xgboost, shap, fastapi, uvicorn

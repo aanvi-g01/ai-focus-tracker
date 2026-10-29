@@ -1,0 +1,24 @@
+[project]
+name = "focus-tracker"
+version = "0.1.0"
+description = "AI Focus Tracker: personalized, explainable focus-state classification (GP055)"
+requires-python = ">=3.10"
+dependencies = [
+  "psutil>=5.9",
+  "pynput>=1.7",
+  "pyobjc-framework-Cocoa>=10.0; sys_platform == 'darwin'",
+  "pyobjc-framework-Quartz>=10.0; sys_platform == 'darwin'",
+]
+
+[project.scripts]
+focus-logger = "focus_tracker.logger.agent:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
