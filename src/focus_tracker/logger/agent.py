@@ -7,13 +7,14 @@ import signal
 import time
 from datetime import datetime
 
+from .idle import IdleTracker
 from .input_counter import InputCounter
 from .probes import get_active_app, get_idle_seconds
 from .storage import EventStore
 
 POLL_SECONDS = 1.0
 FLUSH_SECONDS = 5.0       # how often input counts are written
-IDLE_THRESHOLD = 60.0     # seconds without input => 'idle'
+IDLE_THRESHOLD = 20.0     # seconds without input => 'idle'
 
 
 class Agent:
@@ -24,10 +25,14 @@ class Agent:
         self.get_app = get_app
         self.get_idle = get_idle or (lambda: get_idle_seconds(counter.last_input))
         self.idle_threshold = idle_threshold
+        self.idle = IdleTracker(idle_threshold)
         self.flush_seconds = flush_seconds
         self.current_app = None
-        self.is_idle = False
         self._last_flush = None
+
+    @property
+    def is_idle(self):
+        return self.idle.is_idle
 
     def step(self, now: datetime):
         """One polling tick. Pure logic -> easy to unit test."""
@@ -40,12 +45,15 @@ class Agent:
             self.store.log(now, app, event)
             self.current_app = app
 
-        idle = self.get_idle() >= self.idle_threshold
-        if idle and not self.is_idle:
-            self.store.log(now, self.current_app, "idle")
-        elif not idle and self.is_idle:
-            self.store.log(now, self.current_app, "active")
-        self.is_idle = idle
+        # Idle time is a raw signal only: we record that an idle episode began
+        # and how long it lasted. Nothing here labels the user (no 'distracted').
+        change = self.idle.update(self.get_idle())
+        if change is not None:
+            if change.kind == "started":
+                self.store.log(now, self.current_app, "idle")
+            else:
+                self.store.log(now, self.current_app, "idle_duration", change.seconds)
+                self.store.log(now, self.current_app, "active")
 
         if (now - self._last_flush).total_seconds() >= self.flush_seconds:
             keys, mouse = self.counter.drain()
@@ -54,6 +62,12 @@ class Agent:
             if mouse:
                 self.store.log(now, self.current_app, "mouse_count", mouse)
             self._last_flush = now
+
+    def finish(self, now: datetime):
+        """Record an idle episode still in progress (e.g. on shutdown)."""
+        change = self.idle.close()
+        if change is not None:
+            self.store.log(now, self.current_app, "idle_duration", change.seconds)
 
     def run(self):
         self.store.log(datetime.now(), None, "agent_start")
@@ -64,6 +78,7 @@ class Agent:
                 self.step(datetime.now())
                 time.sleep(POLL_SECONDS)
         finally:
+            self.finish(datetime.now())
             self.store.log(datetime.now(), None, "agent_stop")
 
 

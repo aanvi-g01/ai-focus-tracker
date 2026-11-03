@@ -12,7 +12,8 @@ ALLOWED_EVENTS = {
     "agent_start", "agent_stop",
     "active",          # first window seen / user returned from idle
     "switched",        # foreground application changed
-    "idle",            # no input for >= idle threshold
+    "idle",            # no input for >= idle threshold (episode started)
+    "idle_duration",   # episode ended: value = total idle SECONDS (a number only)
     "keyboard_count",  # number of key events in the interval (no identity)
     "mouse_count",     # number of mouse events in the interval
 }

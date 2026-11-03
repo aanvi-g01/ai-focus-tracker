@@ -30,20 +30,54 @@ def get_active_app():
     return None
 
 
+_TICK_MASK = 0xFFFFFFFF
+
+
+def idle_seconds_from_ticks(now_tick, last_input_tick):
+    """Idle seconds from two 32-bit millisecond tick counts.
+
+    GetLastInputInfo().dwTime and GetTickCount() are both 32-bit and wrap
+    every ~49.7 days; masking the difference keeps the result correct across
+    a wrap.  Pure function so it can be tested on any OS.
+    """
+    return ((now_tick - last_input_tick) & _TICK_MASK) / 1000.0
+
+
+def _windows_idle_seconds():
+    """Seconds since last keyboard/mouse input via Win32 GetLastInputInfo.
+
+    Returns None if the call fails (caller then falls back).  Only a tick
+    count is read - no key, no coordinates, no window content.  Note: this is
+    per-session, and synthetic input (remote-desktop, automation tools) also
+    resets it.
+    """
+    import ctypes
+    from ctypes import wintypes
+
+    class LASTINPUTINFO(ctypes.Structure):
+        _fields_ = [("cbSize", wintypes.UINT), ("dwTime", wintypes.DWORD)]
+
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    user32.GetLastInputInfo.argtypes = [ctypes.POINTER(LASTINPUTINFO)]
+    user32.GetLastInputInfo.restype = wintypes.BOOL
+    kernel32.GetTickCount.argtypes = []
+    kernel32.GetTickCount.restype = wintypes.DWORD
+
+    info = LASTINPUTINFO()
+    info.cbSize = ctypes.sizeof(LASTINPUTINFO)
+    if not user32.GetLastInputInfo(ctypes.byref(info)):
+        return None
+    return idle_seconds_from_ticks(kernel32.GetTickCount(), info.dwTime)
+
+
 def get_idle_seconds(last_input_monotonic=None):
-    """Seconds since last keyboard/mouse input."""
+    """Seconds since last keyboard/mouse input (OS-level, content-free)."""
     try:
         if sys.platform == "win32":
-            import ctypes
-
-            class LASTINPUTINFO(ctypes.Structure):
-                _fields_ = [("cbSize", ctypes.c_uint), ("dwTime", ctypes.c_uint)]
-
-            info = LASTINPUTINFO()
-            info.cbSize = ctypes.sizeof(info)
-            if ctypes.windll.user32.GetLastInputInfo(ctypes.byref(info)):
-                millis = (ctypes.windll.kernel32.GetTickCount() - info.dwTime) & 0xFFFFFFFF
-                return max(0.0, millis / 1000.0)
+            secs = _windows_idle_seconds()
+            if secs is not None:
+                return max(0.0, secs)
         elif sys.platform == "darwin":
             import Quartz  # pip: pyobjc-framework-Quartz
             return float(Quartz.CGEventSourceSecondsSinceLastEventType(
