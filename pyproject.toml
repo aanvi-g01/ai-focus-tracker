@@ -12,6 +12,8 @@ dependencies = [
 
 [project.scripts]
 focus-logger = "focus_tracker.logger.agent:main"
+focus-session = "focus_tracker.logger.session:main"
+focus-label = "focus_tracker.logger.labels:main"
 
 [build-system]
 requires = ["setuptools>=68"]

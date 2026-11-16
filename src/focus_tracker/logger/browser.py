@@ -168,6 +168,28 @@ def get_active_site():
         return None
 
 
+def _window_title(hwnd, max_chars=512):
+    buf = ctypes.create_unicode_buffer(max_chars)
+    ctypes.windll.user32.GetWindowTextW(hwnd, buf, max_chars)
+    return buf.value or None
+
+
+def get_active_title():
+    """Title of the foreground browser window, or None.
+
+    Only ever called for mixed-content platforms (content.TITLE_HOSTS) when the
+    user opted in. The caller turns it into a category and drops it; it is
+    never logged or stored.
+    """
+    if sys.platform != "win32":
+        return None
+    try:
+        hwnd = _foreground_hwnd()
+        return _window_title(hwnd) if hwnd else None
+    except Exception:
+        return None
+
+
 def _probe():
     """Manually test browser hostname detection."""
 

@@ -2,17 +2,22 @@
 
 Records ONLY: active app, window switches, idle time, input-event counts and,
 when the foreground app is a browser, the website HOSTNAME (never the path,
-query, page title or anything done on the page).
+query, page title or anything done on the page) and a one-word content
+CATEGORY derived locally from it (see content.py).  Every row is also stamped
+with the id of the focus session active at that moment (see session.py).
 """
 import argparse
 import signal
 import time
 from datetime import datetime
 
-from .browser import get_active_site, is_browser, normalize_site, uia_available
+from .browser import (get_active_site, get_active_title, is_browser,
+                      normalize_site, uia_available)
+from .content import classify_content, clean_title, is_video_host, needs_title
 from .idle import IdleTracker
 from .input_counter import InputCounter
 from .probes import get_active_app, get_idle_seconds
+from .session import STALE_AFTER_SECONDS, SessionManager
 from .storage import EventStore
 
 POLL_SECONDS = 1.0
@@ -25,9 +30,13 @@ class Agent:
     def __init__(self, store, counter, get_app=get_active_app,
                  get_idle=None, idle_threshold=IDLE_THRESHOLD,
                  flush_seconds=FLUSH_SECONDS,
-                 get_site=None, site_poll_seconds=SITE_POLL_SECONDS):
+                 get_site=None, site_poll_seconds=SITE_POLL_SECONDS,
+                 get_title=None):
         """`get_site=None` disables website tracking (the default, so unit
-        tests never touch the real desktop); main() passes get_active_site."""
+        tests never touch the real desktop); main() passes get_active_site.
+        `get_title=None` (default) never reads a page title; with it, titles of
+        mixed-content / video platforms only are read: used for the category,
+        and stored as content_title on video-streaming platforms."""
         self.store, self.counter = store, counter
         self.get_app = get_app
         self.get_idle = get_idle or (lambda: get_idle_seconds(counter.last_input))
@@ -36,9 +45,14 @@ class Agent:
         self.flush_seconds = flush_seconds
         self.get_site = get_site
         self.site_poll_seconds = site_poll_seconds
+        self.get_title = get_title
         self.current_app = None
         self.current_site = None      # hostname as read last time (None = unknown)
         self._last_site = None        # last *readable* hostname in this browser stay
+        self.current_category = None  # content category of current_site
+        self._last_category = None    # last known category of _last_site
+        self.current_title = None     # video title (video platforms only)
+        self._last_title = None
         self._site_checked_at = None
         self._last_flush = None
 
@@ -48,35 +62,69 @@ class Agent:
 
     # -- logging: every row is stamped with the current site while in a browser --
     def _log(self, now, event, value=1):
-        site = self.current_site if is_browser(self.current_app) else None
-        self.store.log(now, self.current_app, event, value, website=site)
+        in_browser = is_browser(self.current_app)
+        self.store.log(now, self.current_app, event, value,
+                       website=self.current_site if in_browser else None,
+                       content_category=self.current_category if in_browser else None,
+                       content_title=self.current_title if in_browser else None,
+                       session_id=self.store.active_session_id())
+
+    def _categorize(self, site):
+        """(category, title_to_store) for `site`. A title is kept only for
+        video-streaming platforms; for other hosts it never leaves here."""
+        if site is None:
+            return None, None
+        title = None
+        if self.get_title is not None and needs_title(site):
+            try:
+                title = clean_title(self.get_title())
+            except Exception:
+                title = None
+        return classify_content(site, title), (title if is_video_host(site) else None)
 
     def _update_site(self, now, app, app_changed):
-        """Refresh the current site. Returns True if the site changed inside
-        the same browser (the caller logs 'site_switched')."""
+        """Refresh the current site and category. Returns the event to log for
+        a change inside the same browser ('site_switched' / 'content_changed')
+        or None."""
         if self.get_site is None or not is_browser(app):
             self.current_site = self._last_site = self._site_checked_at = None
-            return False
+            self.current_category = self._last_category = None
+            self.current_title = self._last_title = None
+            return None
         due = (app_changed or self._site_checked_at is None or
                (now - self._site_checked_at).total_seconds() >= self.site_poll_seconds)
         if not due:
-            return False
+            return None
         self._site_checked_at = now
         try:
             site = normalize_site(self.get_site())   # re-sanitise: hostname only
         except Exception:
             site = None
-        self.current_site = site
+        category, title = self._categorize(site)
+        self.current_site, self.current_category, self.current_title = site, category, title
         if app_changed:
-            self._last_site = site
-            return False
+            self._last_site, self._last_category, self._last_title = site, category, title
+            return None
         # An unreadable address bar (typing, new tab, internal page) is "unknown",
         # not a switch: only a *different readable* site counts as a switch.
-        changed = (site is not None and self._last_site is not None
-                   and site != self._last_site)
-        if site is not None:
-            self._last_site = site
-        return changed
+        if site is None:
+            return None
+        event = None
+        if self._last_site is not None and site != self._last_site:
+            event = "site_switched"
+        elif site == self._last_site and (
+                (category is not None and self._last_category is not None
+                 and category != self._last_category) or
+                (title is not None and self._last_title is not None
+                 and title != self._last_title)):
+            event = "content_changed"   # e.g. a different video on the same site
+        # Unreadable values (None) on the same site keep the last known ones.
+        if site != self._last_site or category is not None:
+            self._last_category = category
+        if site != self._last_site or title is not None:
+            self._last_title = title
+        self._last_site = site
+        return event
 
     def step(self, now: datetime):
         """One polling tick. Pure logic -> easy to unit test."""
@@ -89,8 +137,10 @@ class Agent:
             self.current_app = app
             self._update_site(now, app, app_changed=True)
             self._log(now, event)
-        elif app and self._update_site(now, app, app_changed=False):
-            self._log(now, "site_switched")
+        elif app:
+            event = self._update_site(now, app, app_changed=False)
+            if event:
+                self._log(now, event)
 
         # Idle time is a raw signal only: we record that an idle episode began
         # and how long it lasted. Nothing here labels the user (no 'distracted').
@@ -117,7 +167,8 @@ class Agent:
             self._log(now, "idle_duration", change.seconds)
 
     def run(self):
-        self.store.log(datetime.now(), None, "agent_start")
+        self.store.log(datetime.now(), None, "agent_start",
+                       session_id=self.store.active_session_id())
         stop = {"flag": False}
         signal.signal(signal.SIGINT, lambda *_: stop.update(flag=True))
         try:
@@ -126,7 +177,8 @@ class Agent:
                 time.sleep(POLL_SECONDS)
         finally:
             self.finish(datetime.now())
-            self.store.log(datetime.now(), None, "agent_stop")
+            self.store.log(datetime.now(), None, "agent_stop",
+                           session_id=self.store.active_session_id())
 
 
 def main():
@@ -137,6 +189,13 @@ def main():
                    help="do not read the browser address bar (website column stays NULL)")
     p.add_argument("--site-poll", type=float, default=SITE_POLL_SECONDS,
                    help="seconds between address-bar reads (default 2)")
+    p.add_argument("--read-titles", action="store_true",
+                   help="opt-in: on video/blog platforms only, read the page title to "
+                        "classify content; on video-streaming sites (youtube.com, "
+                        "netflix.com, ...) the video title is also stored")
+    p.add_argument("--stale-after", type=float, default=STALE_AFTER_SECONDS / 3600,
+                   help="hours without any recorded activity after which a session "
+                        "left open is auto-closed at its last activity (default 2)")
     args = p.parse_args()
 
     use_sites = not args.no_websites
@@ -145,15 +204,21 @@ def main():
               "(pip install uiautomation). The website column will stay NULL.")
 
     store = EventStore(args.db)
+    recovered = SessionManager(store).recover_stale(
+        datetime.now(), stale_after=args.stale_after * 3600)
+    if recovered:
+        print(f"Unfinished session #{recovered.id} {recovered.task!r} was auto-closed "
+              f"at its last activity ({recovered.ended_at:%Y-%m-%d %H:%M}).")
     counter = InputCounter()
     counter.start()
     what = "app names, switches, idle, input COUNTS" + (
-        ", browser site HOSTNAME" if use_sites else "") + " only"
+        ", browser site HOSTNAME + content category" if use_sites else "") + " only"
     print(f"Logging to {args.db} ({what}). Ctrl+C to stop.")
     try:
         Agent(store, counter, idle_threshold=args.idle_threshold,
               get_site=get_active_site if use_sites else None,
-              site_poll_seconds=args.site_poll).run()
+              site_poll_seconds=args.site_poll,
+              get_title=get_active_title if use_sites and args.read_titles else None).run()
     finally:
         counter.stop()
         store.close()

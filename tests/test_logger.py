@@ -28,8 +28,10 @@ def test_rejects_non_whitelisted_event():
 def test_schema_has_no_content_columns():
     s = EventStore(":memory:")
     cols = [r[1] for r in s.conn.execute("PRAGMA table_info(events)")]
-    # `website` is the only text column besides app: hostname-only, browsers-only
-    assert cols == ["id", "ts", "app", "event", "value", "website"]
+    # `website` is the only free-text column besides app: hostname-only, browsers-only;
+    # content_category is a validated one-word enum, session_id an integer
+    assert cols == ["id", "ts", "app", "event", "value", "website",
+                    "session_id", "content_category", "content_title"]
 
 
 def test_counter_never_reads_key_identity():
@@ -334,7 +336,8 @@ def test_old_database_is_migrated_without_losing_rows():
 
         s = EventStore(path)
         cols = [r[1] for r in s.conn.execute("PRAGMA table_info(events)")]
-        assert cols == ["id", "ts", "app", "event", "value", "website"]
+        assert cols == ["id", "ts", "app", "event", "value", "website",
+                        "session_id", "content_category", "content_title"]
         assert s.rows(include_website=True)[0][4] is None      # old row kept, NULL site
         s.log(T0, "chrome.exe", "site_switched", website="github.com")
         assert s.rows(include_website=True)[-1][4] == "github.com"

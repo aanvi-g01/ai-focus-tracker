@@ -2,6 +2,8 @@
 
 Only the *process/app name* of the foreground window is read - never the window
 title (titles often contain document names / URLs, i.e. screen content).
+The single exception is opt-in and lives in browser.get_active_title(): video /
+blog platforms only, reduced to a category in memory and never stored.
 """
 import sys
 import time
