@@ -1,0 +1,222 @@
+{
+  "config": {
+    "alpha": 0.05,
+    "seed": 0,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "single_class_participants": [
+    "P06"
+  ],
+  "time_ablation": {
+    "gbt_raw": {
+      "with_time": {
+        "macro_f1": 0.3498242287790813,
+        "lopo_mean": 0.3687
+      },
+      "without_time": {
+        "macro_f1": 0.46004842615012115,
+        "ci95": [
+          0.4162,
+          0.4998
+        ],
+        "lopo_mean": 0.3839
+      },
+      "mcnemar_without_vs_with": {
+        "b": 44,
+        "c": 15,
+        "p_value": 0.00020372185740785698
+      }
+    },
+    "gbt_z": {
+      "with_time": {
+        "macro_f1": 0.44634377967711303,
+        "lopo_mean": 0.4052
+      },
+      "without_time": {
+        "macro_f1": 0.5318813849095059,
+        "ci95": [
+          0.4968,
+          0.5663
+        ],
+        "lopo_mean": 0.4053
+      },
+      "mcnemar_without_vs_with": {
+        "b": 37,
+        "c": 18,
+        "p_value": 0.014453833533827731
+      }
+    }
+  },
+  "without_single_class": {
+    "rule": {
+      "time_split_macro_f1": 0.24703768453768457,
+      "lopo_mean": 0.3667,
+      "lopo_mean_all": 0.3396
+    },
+    "gbt_raw": {
+      "time_split_macro_f1": 0.3457070397185749,
+      "lopo_mean": 0.2985,
+      "lopo_mean_all": 0.3687
+    },
+    "gbt_z": {
+      "time_split_macro_f1": 0.4435897435897436,
+      "lopo_mean": 0.3391,
+      "lopo_mean_all": 0.4052
+    },
+    "hmm": {
+      "time_split_macro_f1": 0.21705281156247677,
+      "lopo_mean": 0.3208,
+      "lopo_mean_all": 0.3887
+    }
+  },
+  "seed_stability": {
+    "gbt_raw": {
+      "values": [
+        0.3498242287790813,
+        0.35740670536440583,
+        0.3535083931425395,
+        0.35243251726302577,
+        0.34324418546740376
+      ],
+      "mean": 0.3513,
+      "sd": 0.0053
+    },
+    "gbt_z": {
+      "values": [
+        0.44634377967711303,
+        0.533560401945334,
+        0.54502365741086,
+        0.5438178053830227,
+        0.5455
+      ],
+      "mean": 0.5228,
+      "sd": 0.043
+    },
+    "delta_z_minus_raw": {
+      "values": [
+        0.0965,
+        0.1762,
+        0.1915,
+        0.1914,
+        0.2023
+      ],
+      "mean": 0.1716,
+      "min": 0.0965,
+      "positive_in": "5/5"
+    }
+  },
+  "focused_vs_distracted": {
+    "rule": {
+      "time_split_macro_f1": 0.3369,
+      "lopo_macro_f1": 0.3709
+    },
+    "gbt_raw": {
+      "time_split_macro_f1": 0.4615,
+      "lopo_macro_f1": 0.5072
+    },
+    "gbt_z": {
+      "time_split_macro_f1": 0.68,
+      "lopo_macro_f1": 0.5634
+    },
+    "hmm": {
+      "time_split_macro_f1": 0.313,
+      "lopo_macro_f1": 0.3389
+    }
+  },
+  "inactive": {
+    "per_participant": {
+      "P01": {
+        "total": 1,
+        "train": 1,
+        "test": 0
+      },
+      "P07": {
+        "total": 3,
+        "train": 1,
+        "test": 2
+      },
+      "P09": {
+        "total": 16,
+        "train": 11,
+        "test": 5
+      },
+      "P10": {
+        "total": 193,
+        "train": 193,
+        "test": 0
+      }
+    },
+    "test_windows": 7,
+    "test_predicted_as": {
+      "rule": {
+        "Focused": 5,
+        "Distracted": 0,
+        "Inactive": 2
+      },
+      "gbt_raw": {
+        "Focused": 5,
+        "Distracted": 0,
+        "Inactive": 2
+      },
+      "gbt_z": {
+        "Focused": 7,
+        "Distracted": 0,
+        "Inactive": 0
+      },
+      "hmm": {
+        "Focused": 5,
+        "Distracted": 0,
+        "Inactive": 2
+      }
+    },
+    "lopo_recall": {
+      "rule": 0.9249,
+      "gbt_raw": 0.0563,
+      "gbt_z": 0.0047,
+      "hmm": 0.9296
+    },
+    "lopo_recall_per_participant": {
+      "P01": {
+        "rule": 1.0,
+        "gbt_raw": 1.0,
+        "gbt_z": 1.0,
+        "hmm": 1.0
+      },
+      "P07": {
+        "rule": 0.6667,
+        "gbt_raw": 0.0,
+        "gbt_z": 0.0,
+        "hmm": 0.6667
+      },
+      "P09": {
+        "rule": 0.5,
+        "gbt_raw": 0.25,
+        "gbt_z": 0.0,
+        "hmm": 0.5
+      },
+      "P10": {
+        "rule": 0.9637,
+        "gbt_raw": 0.0363,
+        "gbt_z": 0.0,
+        "hmm": 0.9689
+      }
+    }
+  },
+  "label_consistency": {
+    "n_common": 140,
+    "agreement": 0.7857,
+    "kappa": 0.5658,
+    "changes": {
+      "Distracted -> Focused": 4,
+      "Distracted -> Inactive": 4,
+      "Focused -> Inactive": 21,
+      "Inactive -> Focused": 1
+    }
+  }
+}

@@ -1,0 +1,7 @@
+test,model,real_only,with_synthetic
+Later days (same people),LightGBM raw,0.350,0.368
+Later days (same people),LightGBM + z-scores,0.446,0.361
+New person (LOPO mean),LightGBM raw,0.369,0.418
+New person (LOPO mean),LightGBM + z-scores,0.405,0.400
+Person outside the study,LightGBM raw,0.488,0.503
+Person outside the study,LightGBM + z-scores,0.196,0.213

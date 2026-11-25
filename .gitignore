@@ -218,3 +218,22 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# AI Focus Tracker: local data and build output
+data/external/
+data/team.db
+data/logger.lock
+dashboard/node_modules/
+dashboard/dist/
+
+# Participants' exported windows (personal data) and trained models
+data/participants/
+/models/
+/results/
+data/personal_model/
+data/llm_cache.json
+
+# Local activity data, settings and caches (personal data, never committed)
+data/activity.db
+data/settings.json
+dashboard/data/

@@ -5,12 +5,20 @@ when the foreground app is a browser, the website HOSTNAME (never the path,
 query, page title or anything done on the page) and a one-word content
 CATEGORY derived locally from it (see content.py).  Every row is also stamped
 with the id of the focus session active at that moment (see session.py).
+
+While it runs, the agent also rebuilds the `windows` table every window length
+(default 5 min) counted from its own start, and once more when it stops, so
+windows anchored at the start time appear automatically
+(see features/windows.py).
 """
 import argparse
 import signal
+import sys
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
+from ..features.windows import (DEFAULT_WINDOW_SECONDS, refresh_windows,
+                                validate_window_seconds)
 from .browser import (get_active_site, get_active_title, is_browser,
                       normalize_site, uia_available)
 from .content import classify_content, clean_title, is_video_host, needs_title
@@ -31,12 +39,14 @@ class Agent:
                  get_idle=None, idle_threshold=IDLE_THRESHOLD,
                  flush_seconds=FLUSH_SECONDS,
                  get_site=None, site_poll_seconds=SITE_POLL_SECONDS,
-                 get_title=None):
+                 get_title=None, window_seconds=None):
         """`get_site=None` disables website tracking (the default, so unit
         tests never touch the real desktop); main() passes get_active_site.
         `get_title=None` (default) never reads a page title; with it, titles of
         mixed-content / video platforms only are read: used for the category,
-        and stored as content_title on video-streaming platforms."""
+        and stored as content_title on video-streaming platforms.
+        `window_seconds=None` (default) never touches the `windows` table;
+        with it, begin() schedules a refresh every window_seconds."""
         self.store, self.counter = store, counter
         self.get_app = get_app
         self.get_idle = get_idle or (lambda: get_idle_seconds(counter.last_input))
@@ -55,6 +65,9 @@ class Agent:
         self._last_title = None
         self._site_checked_at = None
         self._last_flush = None
+        self.window_seconds = (validate_window_seconds(window_seconds)
+                               if window_seconds is not None else None)
+        self._next_refresh = None     # next window boundary (set by begin())
 
     @property
     def is_idle(self):
@@ -160,6 +173,37 @@ class Agent:
                 self._log(now, "mouse_count", mouse)
             self._last_flush = now
 
+        if self._next_refresh is not None and now >= self._next_refresh:
+            self.refresh_windows(now, live=True)
+            step = timedelta(seconds=self.window_seconds)
+            while self._next_refresh <= now:
+                self._next_refresh += step
+
+    def refresh_windows(self, now: datetime, live: bool):
+        """Rebuild the windows table. A failure is reported, never fatal:
+        raw events keep being logged and the next refresh rebuilds all."""
+        if self.window_seconds is None:
+            return
+        try:
+            refresh_windows(self.store, self.window_seconds, now, live=live)
+        except Exception as e:
+            print(f"WARNING: could not refresh windows: {e}", file=sys.stderr)
+
+    def begin(self, now: datetime):
+        """Mark the start of this run; windows are anchored at this moment."""
+        self.store.log(now, None, "agent_start",
+                       session_id=self.store.active_session_id())
+        if self.window_seconds is not None:
+            self._next_refresh = now + timedelta(seconds=self.window_seconds)
+
+    def end(self, now: datetime):
+        """Close the run, then rebuild windows so its last one is complete."""
+        self.finish(now)
+        self.store.log(now, None, "agent_stop",
+                       session_id=self.store.active_session_id())
+        self._next_refresh = None
+        self.refresh_windows(now, live=False)
+
     def finish(self, now: datetime):
         """Record an idle episode still in progress (e.g. on shutdown)."""
         change = self.idle.close()
@@ -167,8 +211,7 @@ class Agent:
             self._log(now, "idle_duration", change.seconds)
 
     def run(self):
-        self.store.log(datetime.now(), None, "agent_start",
-                       session_id=self.store.active_session_id())
+        self.begin(datetime.now())
         stop = {"flag": False}
         signal.signal(signal.SIGINT, lambda *_: stop.update(flag=True))
         try:
@@ -176,9 +219,7 @@ class Agent:
                 self.step(datetime.now())
                 time.sleep(POLL_SECONDS)
         finally:
-            self.finish(datetime.now())
-            self.store.log(datetime.now(), None, "agent_stop",
-                           session_id=self.store.active_session_id())
+            self.end(datetime.now())
 
 
 def main():
@@ -196,7 +237,14 @@ def main():
     p.add_argument("--stale-after", type=float, default=STALE_AFTER_SECONDS / 3600,
                    help="hours without any recorded activity after which a session "
                         "left open is auto-closed at its last activity (default 2)")
+    p.add_argument("--window-seconds", type=int, default=DEFAULT_WINDOW_SECONDS,
+                   help="length of the activity windows, built automatically from the "
+                        "moment the logger starts (default 300 = 5 min; minimum 60)")
     args = p.parse_args()
+    try:
+        validate_window_seconds(args.window_seconds)
+    except ValueError as e:
+        p.error(str(e))
 
     use_sites = not args.no_websites
     if use_sites and not uia_available():
@@ -213,12 +261,14 @@ def main():
     counter.start()
     what = "app names, switches, idle, input COUNTS" + (
         ", browser site HOSTNAME + content category" if use_sites else "") + " only"
-    print(f"Logging to {args.db} ({what}). Ctrl+C to stop.")
+    print(f"Logging to {args.db} ({what}). Windows of {args.window_seconds}s are "
+          f"built every {args.window_seconds}s from now. Ctrl+C to stop.")
     try:
         Agent(store, counter, idle_threshold=args.idle_threshold,
               get_site=get_active_site if use_sites else None,
               site_poll_seconds=args.site_poll,
-              get_title=get_active_title if use_sites and args.read_titles else None).run()
+              get_title=get_active_title if use_sites and args.read_titles else None,
+              window_seconds=args.window_seconds).run()
     finally:
         counter.stop()
         store.close()

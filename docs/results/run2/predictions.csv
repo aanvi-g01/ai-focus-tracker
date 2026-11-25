@@ -1,0 +1,219 @@
+participant,day,label,pred_rule,pred_gbt_raw,pred_gbt_z,pred_hmm,explanation
+P02,1,Distracted,Inactive,Focused,Distracted,Inactive,Distracted: keys/min vs your usual z -0.6; app switches/min vs your usual z -0.7; messaging app time n/a
+P02,1,Distracted,Inactive,Focused,Distracted,Inactive,Distracted: keys/min vs your usual z -0.6; app switches/min vs your usual z -0.7; messaging app time n/a
+P02,1,Distracted,Inactive,Focused,Distracted,Inactive,Distracted: keys/min vs your usual z -0.6; app switches/min vs your usual z -0.6; messaging app time n/a
+P02,1,Distracted,Focused,Distracted,Distracted,Inactive,Distracted: keys/min vs your usual z -0.6; app switches/min vs your usual z -0.6; messaging app time n/a
+P02,1,Distracted,Focused,Distracted,Distracted,Focused,Distracted: keys/min vs your usual z -0.6; app switches/min vs your usual z -0.6; messaging app time n/a
+P02,1,Distracted,Focused,Distracted,Distracted,Focused,Distracted: keys/min vs your usual z -0.6; messaging app time n/a; app switches/min vs your usual z -0.6
+P02,1,Distracted,Focused,Distracted,Distracted,Focused,Distracted: app switches/min vs your usual z -0.6; messaging app time n/a; time of day 0.99
+P02,1,Distracted,Focused,Distracted,Distracted,Focused,Distracted: keys/min vs your usual z -0.5; messaging app time n/a; app switches/min vs your usual z -0.5
+P02,1,Distracted,Focused,Distracted,Distracted,Focused,Distracted: keys/min vs your usual z -0.5; messaging app time n/a; time of day 0.98
+P02,1,Distracted,Focused,Distracted,Distracted,Focused,Distracted: messaging app time n/a; time of day 0.98; time of day 0.20
+P02,1,Distracted,Focused,Distracted,Distracted,Focused,Distracted: time of day 0.97; messaging app time n/a; time of day 0.22
+P02,1,Distracted,Focused,Distracted,Distracted,Focused,Distracted: messaging app time n/a; time of day 0.97; time of day 0.25
+P02,1,Distracted,Focused,Distracted,Distracted,Focused,Distracted: messaging app time n/a; time of day 0.96; time of day 0.27
+P02,1,Distracted,Focused,Focused,Distracted,Inactive,Distracted: messaging app time n/a; time of day 0.29; app switches/min vs your usual z -0.5
+P02,1,Distracted,Focused,Focused,Distracted,Inactive,Distracted: messaging app time n/a; time of day 0.31; app switches/min vs your usual z -0.4
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: messaging app time n/a; time of day 0.33; app switches/min vs your usual z -0.4
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: time of day 0.35; messaging app time n/a; app switches/min vs your usual z -0.4
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: time of day 0.37; messaging app time n/a; app switches/min vs your usual z -0.4
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: messaging app time n/a; time of day 0.39; app switches/min vs your usual z -0.4
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: messaging app time n/a; time of day 0.41; app switches/min vs your usual z -0.4
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: messaging app time n/a; time of day 0.43; app switches/min vs your usual z -0.4
+P02,1,Distracted,Focused,Focused,Distracted,Inactive,Distracted: time of day 0.45; messaging app time n/a; app switches/min vs your usual z -0.4
+P02,1,Distracted,Focused,Focused,Distracted,Inactive,Distracted: time of day 0.47; messaging app time n/a; app switches/min vs your usual z -0.4
+P02,1,Distracted,Focused,Focused,Distracted,Inactive,Distracted: time of day 0.49; app switches/min vs your usual z -0.4; messaging app time n/a
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: messaging app time n/a; app switches/min vs your usual z -0.3; time of day 0.51
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: messaging app time n/a; app switches/min vs your usual z -0.3; time of day 0.53
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: messaging app time n/a; time of day 0.54; app switches/min vs your usual z -0.3
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: messaging app time n/a; time of day 0.56; app switches/min vs your usual z -0.3
+P02,1,Distracted,Focused,Focused,Focused,Focused,Focused: keys/min vs your usual z -0.3; active share 1.00; media app time vs your usual n/a
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: messaging app time n/a; time of day 0.60; browser time share vs your usual z -0.4
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: messaging app time n/a; time of day 0.62; browser time share vs your usual z -0.4
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: messaging app time n/a; time of day 0.63; browser time share vs your usual z -0.4
+P02,1,Distracted,Focused,Focused,Focused,Focused,Focused: keys/min vs your usual z -0.3; active share 1.00; time of day 0.65
+P02,1,Distracted,Focused,Focused,Focused,Focused,Focused: keys/min vs your usual z -0.3; active share 0.74; media app time vs your usual n/a
+P02,1,Distracted,Focused,Focused,Inactive,Focused,Inactive: keys/min vs your usual z -0.1; mouse events/min 0.00; session task: studying 0.00
+P02,1,Distracted,Focused,Focused,Focused,Focused,Focused: keys/min vs your usual z -0.3; active share 1.00; time of day 0.70
+P02,1,Distracted,Focused,Focused,Focused,Focused,Focused: keys/min vs your usual z -0.3; active share 1.00; time of day 0.71
+P02,1,Distracted,Focused,Focused,Focused,Focused,Focused: keys/min vs your usual z -0.3; active share 1.00; time of day 0.73
+P02,1,Distracted,Focused,Focused,Focused,Focused,Focused: keys/min vs your usual z -0.3; active share 1.00; time of day 0.74
+P02,1,Distracted,Focused,Distracted,Focused,Focused,Focused: keys/min vs your usual z -0.3; active share 1.00; time of day 0.76
+P02,1,Distracted,Focused,Distracted,Inactive,Focused,Inactive: keys/min vs your usual z -0.1; mouse events/min 0.00; session task: studying 0.00
+P02,1,Distracted,Focused,Distracted,Focused,Focused,Focused: keys/min vs your usual z -0.3; active share 1.00; time of day 0.79
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: messaging app time n/a; time of day 0.80; social share vs your usual z -0.2
+P02,1,Distracted,Focused,Focused,Focused,Focused,Focused: app switches/min vs your usual z +8.0; app switches/min 7.00; active share 1.00
+P02,1,Distracted,Focused,Focused,Distracted,Focused,Distracted: messaging app time n/a; app switches/min vs your usual z -0.3; browser time share vs your usual z -0.4
+P02,1,Distracted,Focused,Focused,Focused,Focused,Focused: active share 1.00; keys/min vs your usual z -0.3; media app time vs your usual n/a
+P02,1,Distracted,Focused,Focused,Focused,Focused,Focused: active share 1.00; keys/min vs your usual z -0.3; media app time vs your usual n/a
+P02,1,Distracted,Focused,Focused,Focused,Inactive,Focused: active share 0.57; keys/min vs your usual z -0.3; media app time vs your usual n/a
+P02,1,Distracted,Focused,Focused,Focused,Focused,Focused: active share 1.00; keys/min vs your usual z -0.3; media app time vs your usual n/a
+P02,1,Distracted,Focused,Focused,Focused,Focused,Focused: app switches/min vs your usual z +5.0; app switches/min 7.60; active share 1.00
+P02,1,Distracted,Focused,Focused,Focused,Focused,Focused: active share 1.00; keys/min vs your usual z -0.3; distinct apps vs your usual z +1.5
+P02,1,Distracted,Focused,Focused,Inactive,Focused,Inactive: time of day -0.96; site switches/min vs your usual z -0.2; session task: studying 0.00
+P02,1,Distracted,Focused,Focused,Inactive,Focused,Inactive: time of day -0.95; time of day 0.32; site switches/min vs your usual z -0.2
+P02,1,Distracted,Focused,Focused,Inactive,Focused,Inactive: time of day -0.94; time of day 0.34; site switches/min vs your usual z -0.2
+P02,1,Distracted,Focused,Focused,Inactive,Focused,Inactive: time of day -0.93; time of day 0.36; site switches/min vs your usual z -0.2
+P02,1,Distracted,Focused,Focused,Inactive,Focused,Inactive: time of day -0.93; time of day 0.38; site switches/min vs your usual z -0.2
+P02,1,Distracted,Focused,Focused,Inactive,Focused,Inactive: time of day 0.40; time of day -0.92; site switches/min vs your usual z -0.2
+P02,1,Distracted,Focused,Focused,Inactive,Focused,Inactive: time of day 0.42; time of day -0.91; site switches/min vs your usual z -0.2
+P02,1,Distracted,Focused,Focused,Inactive,Focused,Inactive: time of day 0.44; time of day -0.90; site switches/min vs your usual z -0.2
+P02,1,Distracted,Focused,Focused,Inactive,Focused,Inactive: time of day -0.89; time of day 0.46; site switches/min vs your usual z -0.2
+P02,1,Distracted,Focused,Focused,Inactive,Focused,Inactive: time of day -0.88; time of day 0.48; site switches/min vs your usual z -0.2
+P02,1,Distracted,Focused,Focused,Inactive,Focused,Inactive: keys/min vs your usual z -0.2; time of day 0.50; site switches/min vs your usual z -0.2
+P02,1,Distracted,Focused,Focused,Focused,Inactive,Focused: active share 0.36; keys/min vs your usual z -0.3; media app time vs your usual n/a
+P02,1,Distracted,Focused,Distracted,Focused,Focused,Focused: active share 1.00; keys/min vs your usual z -0.2; idle share 0.00
+P02,1,Distracted,Focused,Distracted,Distracted,Focused,Distracted: messaging app time n/a; messaging app time vs your usual n/a; browser time share vs your usual z -0.3
+P04,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; active share vs your usual z +2.3; keys/min vs your usual z -0.3
+P04,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; active share vs your usual z +2.1; keys/min vs your usual z -0.3
+P04,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; browser time share vs your usual z +0.7; distinct apps vs your usual z +2.7
+P04,1,Distracted,Focused,Focused,Inactive,Focused,Inactive: media app time vs your usual z +1.1; keys/min vs your usual z -0.1; time of day 0.83
+P04,1,Distracted,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; browser time share vs your usual z +1.1; distinct apps vs your usual z +1.0
+P04,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; browser time share vs your usual z +1.1; distinct apps vs your usual z +2.3
+P04,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; browser time share vs your usual z +0.9; keys/min vs your usual z -0.3
+P04,1,Focused,Focused,Distracted,Focused,Focused,Focused: social share vs your usual z -0.1; browser time share vs your usual z +1.0; active share 0.43
+P04,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.3; browser time share vs your usual z +1.2; social share vs your usual z -0.1
+P04,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.3; browser time share vs your usual z +1.1; social share vs your usual z -0.1
+P04,1,Focused,Focused,Distracted,Focused,Focused,Focused: media app time vs your usual z -0.3; browser time share vs your usual z +1.1; social share vs your usual z -0.1
+P04,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; browser time share vs your usual z +0.6; social share vs your usual z -0.1
+P05,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.1; browser time share vs your usual z +1.4; messaging app time vs your usual z -0.2
+P05,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.1; browser time share vs your usual z +1.4; messaging app time vs your usual z -0.1
+P05,1,Focused,Focused,Focused,Focused,Inactive,Focused: media app time vs your usual z -0.1; messaging app time vs your usual z -0.1; active share 0.18
+P05,1,Focused,Inactive,Inactive,Focused,Inactive,Focused: media app time vs your usual z -0.1; idle episodes vs your usual z -1.0; keys/min vs your usual z -0.3
+P05,1,Focused,Inactive,Inactive,Focused,Inactive,Focused: media app time vs your usual z -0.1; idle episodes vs your usual z -1.0; keys/min vs your usual z -0.3
+P05,1,Focused,Inactive,Inactive,Focused,Inactive,Focused: idle episodes vs your usual z -1.0; keys/min vs your usual z -0.3; distinct sites vs your usual z -1.2
+P05,1,Focused,Inactive,Inactive,Focused,Inactive,Focused: idle episodes vs your usual z -1.0; keys/min vs your usual z -0.3; distinct sites vs your usual z -1.2
+P05,1,Distracted,Inactive,Inactive,Focused,Inactive,Focused: idle episodes vs your usual z -1.0; keys/min vs your usual z -0.3; distinct sites vs your usual z -1.1
+P05,1,Focused,Inactive,Inactive,Inactive,Inactive,Inactive: idle share 1.00; time of day -0.99; time of day -0.13
+P05,1,Focused,Inactive,Inactive,Inactive,Inactive,Inactive: idle share 1.00; time of day -0.99; time of day -0.11
+P05,1,Focused,Inactive,Inactive,Inactive,Inactive,Inactive: idle share 1.00; time of day -1.00; time of day -0.09
+P05,1,Focused,Inactive,Inactive,Inactive,Inactive,Inactive: idle share 1.00; time of day -1.00; time of day -0.07
+P05,1,Focused,Inactive,Inactive,Inactive,Inactive,Inactive: idle share 1.00; time of day -1.00; time of day -0.04
+P05,1,Distracted,Inactive,Inactive,Inactive,Inactive,Inactive: idle share 1.00; time of day -1.00; time of day -0.02
+P05,1,Distracted,Inactive,Inactive,Inactive,Inactive,Inactive: idle share 1.00; time of day -1.00; time of day -0.00
+P05,1,Distracted,Inactive,Inactive,Inactive,Inactive,Inactive: idle share 1.00; time of day -1.00; time of day 0.02
+P05,1,Distracted,Inactive,Inactive,Inactive,Inactive,Inactive: idle share 1.00; time of day -1.00; app switches/min vs your usual z -0.2
+P05,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; active share 0.22; media app time vs your usual z -0.0
+P05,1,Focused,Inactive,Inactive,Inactive,Inactive,Inactive: idle share 1.00; app switches/min vs your usual z -0.2; active share 0.00
+P05,1,Focused,Inactive,Inactive,Inactive,Inactive,Inactive: idle share 1.00; app switches/min vs your usual z -0.2; active share 0.00
+P05,1,Focused,Inactive,Inactive,Inactive,Inactive,Inactive: idle share 1.00; app switches/min vs your usual z -0.2; active share 0.00
+P05,1,Focused,Focused,Inactive,Focused,Inactive,Focused: social share vs your usual z -0.1; idle episodes vs your usual z -0.7; media app time vs your usual z -0.0
+P05,1,Focused,Focused,Inactive,Focused,Focused,Focused: social share vs your usual z -0.1; browser time share vs your usual z +0.7; active share 0.06
+P08,1,Focused,Distracted,Focused,Focused,Distracted,Focused: social share vs your usual z -0.1; messaging app time vs your usual z -0.5; active share 1.00
+P08,1,Focused,Focused,Focused,Focused,Distracted,Focused: social share vs your usual z -0.1; messaging app time vs your usual z -0.5; active share 1.00
+P08,1,Focused,Focused,Focused,Focused,Distracted,Focused: social share vs your usual z -0.1; messaging app time vs your usual z -0.5; active share 1.00
+P08,1,Focused,Focused,Focused,Focused,Distracted,Focused: social share vs your usual z -0.1; messaging app time vs your usual z -0.5; active share 1.00
+P08,1,Focused,Focused,Focused,Focused,Distracted,Focused: social share vs your usual z -0.1; messaging app time vs your usual z -0.5; media app time vs your usual z -0.0
+P08,1,Focused,Inactive,Distracted,Focused,Distracted,Focused: social share vs your usual z -0.1; messaging app time vs your usual z -0.4; browser time share vs your usual z +0.5
+P08,1,Focused,Inactive,Distracted,Inactive,Inactive,Inactive: keys/min vs your usual z -0.2; idle share 1.00; idle share vs your usual z +0.8
+P10,1,Focused,Focused,Distracted,Focused,Focused,Focused: app switches/min vs your usual z +4.9; social share vs your usual z -0.1; active share vs your usual z +9.9
+P10,1,Focused,Focused,Focused,Inactive,Focused,Inactive: keys/min vs your usual z +0.2; media app time vs your usual z -0.0; browser time share vs your usual z +4.1
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; active share vs your usual z +3.1; active share 0.68
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; active share vs your usual z +2.8; active share 0.75
+P10,1,Focused,Focused,Focused,Focused,Inactive,Focused: social share vs your usual z -0.1; active share 0.35; time of day -0.52
+P10,1,Focused,Focused,Focused,Focused,Inactive,Focused: social share vs your usual z -0.1; active share 0.28; time of day -0.53
+P10,1,Focused,Focused,Focused,Focused,Inactive,Focused: social share vs your usual z -0.0; active share 0.29; time of day -0.55
+P10,1,Focused,Focused,Focused,Focused,Inactive,Focused: social share vs your usual z -0.0; active share 0.16; time of day -0.57
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; active share 0.46; time of day -0.59
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; active share vs your usual z +3.2; app switches/min vs your usual z +1.4
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; browser time share vs your usual z +1.4; active share 0.78
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; browser time share vs your usual z +1.3; active share vs your usual z +2.4
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; browser time share vs your usual z +1.2; active share 0.16
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; browser time share vs your usual z +1.1; active share 0.75
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; browser time share vs your usual z +1.1; active share 0.57
+P10,1,Focused,Focused,Focused,Focused,Inactive,Focused: social share vs your usual z -0.0; browser time share vs your usual z +0.7; keys/min vs your usual z -0.4
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; browser time share vs your usual z +0.9; active share 0.55
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; browser time share vs your usual z +1.0; active share 0.49
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; browser time share vs your usual z +0.9; keys/min vs your usual z -0.3
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; browser time share vs your usual z +0.9; active share 0.68
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; browser time share vs your usual z +0.9; idle episodes vs your usual z -0.9
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; browser time share vs your usual z +0.8; active share 0.77
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; browser time share vs your usual z +0.5; keys/min vs your usual z -0.3
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; browser time share vs your usual z +0.8; active share 0.41
+P10,1,Focused,Inactive,Distracted,Focused,Inactive,Focused: social share vs your usual z -0.0; idle episodes vs your usual z -1.0; keys/min vs your usual z -0.5
+P10,1,Focused,Focused,Focused,Focused,Inactive,Focused: social share vs your usual z -0.0; idle episodes vs your usual z -1.0; keys/min vs your usual z -0.4
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: app switches/min vs your usual z +5.4; social share vs your usual z -0.0; browser time share vs your usual z +0.9
+P10,1,Distracted,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.0; browser time share vs your usual z +0.8; idle episodes vs your usual z -0.9
+P10,1,Distracted,Focused,Focused,Focused,Distracted,Focused: app switches/min vs your usual z +3.9; social share vs your usual z -0.0; distinct apps vs your usual z +2.4
+P10,1,Focused,Focused,Focused,Focused,Distracted,Focused: social share vs your usual z -0.0; app switches/min vs your usual z +1.6; distinct apps vs your usual z +2.1
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.3; social share vs your usual z -0.0; browser time share vs your usual z +0.7
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.3; social share vs your usual z -0.0; browser time share vs your usual z +0.8
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.3; social share vs your usual z -0.0; browser time share vs your usual z +0.8
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.3; social share vs your usual z -0.0; browser time share vs your usual z +0.8
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.3; social share vs your usual z -0.0; browser time share vs your usual z +0.8
+P10,1,Focused,Focused,Focused,Focused,Inactive,Focused: media app time vs your usual z -0.3; social share vs your usual z -0.0; active share 0.28
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.3; social share vs your usual z -0.0; browser time share vs your usual z +0.7
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.3; social share vs your usual z -0.0; browser time share vs your usual z +0.7
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.3; social share vs your usual z -0.0; browser time share vs your usual z +0.6
+P10,1,Distracted,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; browser time share vs your usual z +0.7
+P10,1,Focused,Focused,Focused,Focused,Inactive,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; idle episodes vs your usual z -0.9
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; browser time share vs your usual z +0.7
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; browser time share vs your usual z +0.6
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; browser time share vs your usual z +0.7
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; browser time share vs your usual z +0.7
+P10,1,Distracted,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; browser time share vs your usual z +0.5
+P10,1,Distracted,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; distinct apps vs your usual z +2.7
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; browser time share vs your usual z +0.6
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; distinct apps vs your usual z +1.3
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; browser time share vs your usual z +0.6
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; browser time share vs your usual z +0.6
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; browser time share vs your usual z +0.6
+P10,1,Focused,Focused,Focused,Focused,Inactive,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; messaging app time vs your usual z -0.3
+P10,1,Distracted,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; browser time share vs your usual z +0.6
+P10,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.0; messaging app time vs your usual z -0.2
+P01,1,Distracted,Inactive,Focused,Distracted,Distracted,Distracted: keys/min vs your usual z -0.8; browser time share 0.39; other-sites share 0.00
+P01,1,Distracted,Inactive,Focused,Distracted,Distracted,Distracted: keys/min vs your usual z -0.8; browser time share 0.32; other-sites share 0.00
+P01,1,Distracted,Distracted,Focused,Focused,Distracted,Focused: social share vs your usual z -0.1; app switches/min vs your usual z -0.5; browser time share vs your usual z +0.4
+P01,1,Focused,Inactive,Focused,Focused,Inactive,Focused: social share vs your usual z -0.1; app switches/min vs your usual z -0.4; distinct sites vs your usual z -1.0
+P01,1,Focused,Focused,Focused,Focused,Inactive,Focused: social share vs your usual z -0.1; active share 0.13; app switches/min vs your usual z -0.4
+P01,1,Focused,Focused,Focused,Focused,Inactive,Focused: social share vs your usual z -0.1; active share 0.13; browser time share vs your usual z +0.4
+P01,1,Distracted,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; idle episodes vs your usual z -0.9; app switches/min vs your usual z +1.9
+P01,1,Distracted,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; browser time share vs your usual z +1.0; idle episodes vs your usual z -0.8
+P01,1,Distracted,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; browser time share vs your usual z +0.7; active share 0.51
+P01,1,Distracted,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; app switches/min vs your usual z +2.2; distinct sites vs your usual z -1.0
+P01,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; keys/min vs your usual z -0.3; active share 0.26
+P01,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; browser time share vs your usual z +1.0; idle episodes vs your usual z -0.9
+P03,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; browser time share vs your usual z +0.8; social share vs your usual z -0.1
+P03,1,Focused,Focused,Focused,Focused,Inactive,Focused: media app time vs your usual z -0.2; active share 0.78; distinct sites vs your usual z -1.0
+P03,1,Focused,Focused,Focused,Focused,Inactive,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.1; active share 0.52
+P03,1,Distracted,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; browser time share vs your usual z +1.3; distinct apps vs your usual z +1.4
+P03,1,Focused,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.1; active share 0.54
+P03,1,Focused,Focused,Focused,Focused,Inactive,Focused: media app time vs your usual z -0.2; keys/min vs your usual z -0.2; active share 0.27
+P03,1,Distracted,Focused,Focused,Focused,Distracted,Focused: social share vs your usual z -0.1; browser time share vs your usual z +1.0; distinct apps vs your usual z +0.6
+P03,1,Distracted,Inactive,Focused,Focused,Inactive,Focused: media app time vs your usual z -0.3; browser time share vs your usual z +1.4; social share vs your usual z -0.1
+P03,1,Distracted,Inactive,Focused,Focused,Inactive,Focused: media app time vs your usual z -0.3; idle episodes vs your usual z -1.1; distinct sites vs your usual z -1.0
+P03,1,Focused,Focused,Focused,Focused,Inactive,Focused: media app time vs your usual z -0.3; social share vs your usual z -0.1; active share 0.14
+P03,1,Focused,Focused,Focused,Focused,Inactive,Focused: media app time vs your usual z -0.3; distinct apps vs your usual z -0.9; active share 0.07
+P03,1,Focused,Inactive,Focused,Focused,Inactive,Focused: media app time vs your usual z -0.3; distinct apps vs your usual z -0.9; distinct sites vs your usual z -1.0
+P03,1,Focused,Focused,Focused,Focused,Inactive,Focused: media app time vs your usual z -0.2; active share 0.18; distinct sites vs your usual z -0.9
+P03,1,Distracted,Focused,Focused,Focused,Focused,Focused: media app time vs your usual z -0.2; social share vs your usual z -0.1; mouse events/min 2715.41
+P06,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; active share 1.00; distinct apps vs your usual z +1.4
+P06,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; active share 0.96; app switches/min vs your usual z +1.9
+P06,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; app switches/min vs your usual z +1.6; active share 1.00
+P06,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; app switches/min 3.00; active share 1.00
+P06,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; browser time share vs your usual z +1.3; mouse events/min 1396.00
+P07,1,Inactive,Inactive,Inactive,Focused,Inactive,Focused: idle episodes vs your usual z -1.0; distinct sites vs your usual z -1.7; site switches/min vs your usual z -0.9
+P07,1,Inactive,Inactive,Inactive,Focused,Inactive,Focused: idle episodes vs your usual z -1.0; distinct sites vs your usual z -1.6; site switches/min vs your usual z -0.9
+P07,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; browser time share vs your usual z +0.5; active share 0.79
+P07,1,Focused,Focused,Focused,Focused,Focused,Focused: social share vs your usual z -0.1; browser time share vs your usual z +1.3; idle episodes vs your usual z -1.0
+P09,1,Inactive,Focused,Focused,Focused,Focused,Focused: browser time share vs your usual z +1.1; idle episodes vs your usual z -0.9; keys/min vs your usual z -0.4
+P09,1,Inactive,Focused,Focused,Focused,Focused,Focused: browser time share vs your usual z +1.3; idle episodes vs your usual z -0.9; keys/min vs your usual z -0.3
+P09,1,Inactive,Focused,Focused,Focused,Focused,Focused: browser time share vs your usual z +1.3; idle episodes vs your usual z -0.8; keys/min vs your usual z -0.4
+P09,1,Inactive,Focused,Focused,Focused,Focused,Focused: browser time share vs your usual z +1.2; keys/min vs your usual z -0.3; idle episodes vs your usual z -0.8
+P09,1,Inactive,Focused,Focused,Focused,Focused,Focused: browser time share vs your usual z +1.1; idle episodes vs your usual z -0.8; keys/min vs your usual z -0.4
+P09,1,Distracted,Focused,Focused,Focused,Focused,Focused: browser time share vs your usual z +1.1; keys/min vs your usual z -0.4; active share 0.63
+P09,1,Distracted,Inactive,Focused,Focused,Inactive,Focused: keys/min vs your usual z -0.4; browser time share vs your usual z +0.3; media app time vs your usual n/a
+P09,1,Focused,Inactive,Focused,Focused,Inactive,Focused: browser time share vs your usual z +0.9; keys/min vs your usual z -0.3; entertainment share vs your usual z -0.0
+P09,1,Focused,Inactive,Focused,Focused,Inactive,Focused: keys/min vs your usual z -0.3; browser time share vs your usual z +0.3; entertainment share vs your usual z -0.0
+P09,1,Focused,Focused,Focused,Focused,Inactive,Focused: browser time share vs your usual z +0.5; keys/min vs your usual z -0.3; active share 0.13
+P09,1,Focused,Focused,Focused,Focused,Focused,Focused: browser time share vs your usual z +1.0; keys/min vs your usual z -0.3; active share 0.59
+P09,1,Focused,Inactive,Focused,Focused,Inactive,Focused: browser time share vs your usual z +0.6; keys/min vs your usual z -0.3; active share 0.03
+P09,1,Distracted,Inactive,Focused,Focused,Inactive,Focused: keys/min vs your usual z -0.3; browser time share vs your usual z +0.2; entertainment share vs your usual z -0.0
+P09,1,Distracted,Focused,Focused,Focused,Inactive,Focused: browser time share vs your usual z +0.8; keys/min vs your usual z -0.3; active share 0.36
+P09,1,Focused,Focused,Focused,Inactive,Focused,Inactive: keys/min vs your usual z +0.1; time of day 0.42; time of day -0.91
+P09,1,Focused,Focused,Inactive,Focused,Focused,Focused: browser time share vs your usual z +1.0; keys/min vs your usual z -0.3; active share 0.67
+P09,1,Focused,Inactive,Focused,Focused,Inactive,Focused: active share 0.03; keys/min vs your usual z -0.3; browser time share vs your usual z +0.4
+P09,1,Focused,Focused,Focused,Focused,Inactive,Focused: browser time share vs your usual z +0.5; keys/min vs your usual z -0.3; active share 0.22
+P09,1,Focused,Focused,Focused,Focused,Inactive,Focused: browser time share vs your usual z +0.7; active share 0.29; social share vs your usual z -0.2
+P09,1,Focused,Focused,Focused,Focused,Inactive,Focused: keys/min vs your usual z -0.3; active share 0.38; browser time share vs your usual z +0.3
+P09,1,Focused,Focused,Distracted,Focused,Focused,Focused: browser time share vs your usual z +0.9; social share vs your usual z -0.1; active share 0.89

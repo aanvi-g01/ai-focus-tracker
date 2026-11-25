@@ -95,6 +95,8 @@ CREATE TABLE IF NOT EXISTS window_labels (
     label          TEXT    NOT NULL CHECK (label IN ('Focused', 'Distracted', 'Inactive')),
     labelled_at    TEXT    NOT NULL,      -- first labelled
     updated_at     TEXT    NOT NULL,      -- last added or corrected
+    source         TEXT    NOT NULL DEFAULT 'user'
+                   CHECK (source IN ('user', 'accepted')),  -- typed, or model guess accepted
     PRIMARY KEY (window_start, window_seconds)
 );
 """
@@ -116,11 +118,16 @@ class EventStore:
         self._migrate_sessions()
 
     def _migrate_sessions(self):
-        """Session tables created before end_reason existed get the column."""
+        """Session tables created before end_reason existed get the column; label
+        tables created before `source` existed get it (old labels were all typed)."""
         cols = [r[1] for r in self.conn.execute("PRAGMA table_info(sessions)")]
         if "end_reason" not in cols:
             self.conn.execute("ALTER TABLE sessions ADD COLUMN end_reason TEXT")
-            self.conn.commit()
+        cols = [r[1] for r in self.conn.execute("PRAGMA table_info(window_labels)")]
+        if "source" not in cols:
+            self.conn.execute("ALTER TABLE window_labels ADD COLUMN source TEXT NOT NULL"
+                              " DEFAULT 'user' CHECK (source IN ('user', 'accepted'))")
+        self.conn.commit()
 
     def _migrate(self):
         """Older databases get the new columns (existing rows keep NULL)."""

@@ -52,3 +52,42 @@ Raw logs stay on the machine; only structured summaries may go to the LLM API.
 * `window_labels` holds only what **you** enter with `focus-label`
   (`Focused` / `Distracted` / `Inactive`). No label is ever inferred, and
   session names or categories never influence labels.
+
+## Predictions (`api/predictions.py`, Insights page)
+
+* The app can show the trained model's **estimate** for each finished window.
+  It is computed on this computer from the window features above, each time
+  the Insights page asks for it.
+* Estimates are **never stored** (not in `window_labels` or anywhere else),
+  **never exported** and never counted as labels. Your own labels remain the
+  only ground truth, and the Insights page shows the two side by side.
+* The model file contains only learned parameters and feature statistics from
+  the training participants (no raw logs, hostnames or titles).
+* **Personal model.** Once you have labelled about 20 windows yourself (at least
+  two different labels), the app trains a model from *your* labels on this
+  computer and uses it instead of the shared one. It is one file of roughly
+  0.1–1 MB in `personal_model/` next to your database, replaced on every
+  retrain (no history is kept), and it is never exported or uploaded. Clearing
+  your labels below the threshold deletes it.
+* **Accepted guesses.** If you press *Accept model*, the label is saved with
+  `source = accepted` (shown with a ✓). It is your decision and is exported
+  with `label_source = accepted`, but it is never used to train any model, so
+  a model never learns from its own guesses.
+* Per-window explanations ("why") use the model's own SHAP values (LightGBM
+  TreeSHAP) and a fixed wording template, computed on this computer.
+
+## LLM explanations (Groq, optional)
+
+* Off until you add a Groq API key on the Insights page (or set `GROQ_API_KEY`).
+  The key is stored in `settings.json` on this computer only and is never shown
+  again or sent anywhere except to Groq.
+* Nothing is sent until you press **Explain this day**. Then only a structured
+  summary of that day goes to Groq (`api/llm.py`, `day_summary`): minutes per
+  estimated state, estimated states per hour, how many windows were low-confidence,
+  the most common SHAP reason phrases, average activity rates (idle share,
+  switches, key/mouse counts per minute), and average time shares per app
+  **category** (coding, browser, documents, messaging, media, system, other) and
+  per website **category** (entertainment, educational, ...).
+* Never sent: app names, website names, video titles, session task text, raw
+  events or labels' timestamps. The page can show the exact JSON that was sent.
+* Answers are cached in `llm_cache.json` next to the database (at most 30, a few KB).

@@ -19,15 +19,17 @@ def t(m, s=0):
     return T0 + timedelta(minutes=m, seconds=s)
 
 
-def _record(store, start_m=0, end_m=12, task="Studying DSA"):
-    """Agent observed start..end (minutes) inside a session with the given name."""
+def _record(store, start_m=0, end_m=12, task="Studying DSA", stop=True):
+    """Agent observed start..end (minutes) inside a session with the given name.
+    stop=False: the agent is still running (its last window is in progress)."""
     sid = SessionManager(store).start(task, t(start_m)).id
     store.log(t(start_m), None, "agent_start", session_id=sid)
     store.log(t(start_m), "Code.exe", "active", session_id=sid)
     for m in range(start_m, end_m):
         store.log(t(m, 30), "Code.exe", "keyboard_count", 20, session_id=sid)
-    store.log(t(end_m), None, "agent_stop", session_id=sid)
-    SessionManager(store).end(t(end_m))
+    if stop:
+        store.log(t(end_m), None, "agent_stop", session_id=sid)
+        SessionManager(store).end(t(end_m))
     return sid
 
 
@@ -35,7 +37,7 @@ def _record(store, start_m=0, end_m=12, task="Studying DSA"):
 def store():
     s = EventStore(":memory:")
     _record(s)
-    refresh_windows(s, now=NOW)      # windows 10:00, 10:05 complete; 10:10 in progress
+    refresh_windows(s, now=NOW)      # windows 10:00, 10:05, 10:10 (partial), all complete
     yield s
     s.close()
 
@@ -113,8 +115,13 @@ def test_invalid_labels_rejected(store, bad):
 
 
 def test_database_rejects_labels_outside_the_three(store):
+    cols = "(window_start, window_seconds, session_id, label, labelled_at, updated_at, source)"
     with pytest.raises(sqlite3.IntegrityError):
-        store.conn.execute("INSERT INTO window_labels VALUES ('x', 300, NULL, 'focused', 'a', 'a')")
+        store.conn.execute(f"INSERT INTO window_labels {cols} VALUES "
+                           "('x', 300, NULL, 'focused', 'a', 'a', 'user')")
+    with pytest.raises(sqlite3.IntegrityError):                 # unknown label source
+        store.conn.execute(f"INSERT INTO window_labels {cols} VALUES "
+                           "('x', 300, NULL, 'Focused', 'a', 'a', 'model')")
 
 
 def test_cannot_label_a_window_without_data(store):
@@ -122,9 +129,27 @@ def test_cannot_label_a_window_without_data(store):
         set_label(store, t(45), "Focused", NOW)
 
 
-def test_cannot_label_a_window_still_in_progress(store):
+def test_cannot_label_a_window_still_in_progress():
+    s = EventStore(":memory:")
+    _record(s, stop=False)                                   # agent still running
+    refresh_windows(s, now=NOW)
     with pytest.raises(LabelError, match="in progress"):
-        set_label(store, t(10), "Focused", NOW)
+        set_label(s, t(10), "Focused", NOW)
+    set_label(s, t(5), "Focused", NOW)                       # ended windows are fine
+
+
+def test_labels_find_windows_that_start_off_the_clock():
+    s = EventStore(":memory:")
+    s.log(t(3, 17), None, "agent_start")
+    s.log(t(3, 17), "Code.exe", "active")
+    s.log(t(14), None, "agent_stop")
+    refresh_windows(s, now=NOW)
+    w, _ = set_label(s, t(10), "Focused", NOW)               # 10:10 is in 10:08:17-10:13:17
+    assert w.window_start == t(8, 17)
+    assert get_label(s, t(8, 17)) == "Focused"
+    assert clear_label(s, t(12, 59)) is True
+    with pytest.raises(LabelError, match="no recorded activity"):
+        set_label(s, t(3), "Focused", NOW)                   # before the logger started
 
 
 # --------------------------------------------------------------------------
@@ -193,7 +218,7 @@ def test_parse_when_rejects_garbage(bad):
 def test_cli_round_trip(capsys):
     with tempfile.TemporaryDirectory() as d:
         db = d + "/cli.db"
-        s = EventStore(db); _record(s); s.close()           # no windows stored yet
+        s = EventStore(db); _record(s, stop=False); s.close()   # no windows stored yet
 
         def run(*args):
             return L.main(["--db", db, *args], now=NOW)
@@ -206,10 +231,10 @@ def test_cli_round_trip(capsys):
         assert run("set", "10:05", "Distracted") == 0
         assert "Corrected Focused -> Distracted" in capsys.readouterr().out
         assert run("list", "--unlabelled") == 0
-        assert "10:05-10:10" not in capsys.readouterr().out
+        assert "10:05:00-10:10:00" not in capsys.readouterr().out
         assert run("set", "10:10", "Focused") == 1           # in progress
         assert "in progress" in capsys.readouterr().err
         assert run("set", "10:00", "great") == 1
         assert run("clear", "10:05") == 0
         assert "Label removed" in capsys.readouterr().out
-        assert run("--window-seconds", "420", "list") == 1   # does not divide a day
+        assert run("--window-seconds", "59", "list") == 1    # shorter than a minute
