@@ -4,7 +4,8 @@ from datetime import datetime, timedelta
 import pytest
 
 from focus_tracker.features import windows as W
-from focus_tracker.features.windows import aggregate_windows, load_rows, window_start
+from focus_tracker.features.windows import (aggregate_windows, load_rows, stored_windows,
+                                            window_start)
 from focus_tracker.logger.agent import Agent
 from focus_tracker.logger.input_counter import InputCounter
 from focus_tracker.logger.session import SessionManager
@@ -29,15 +30,14 @@ def by_start(ws):
 # Window boundaries and configuration
 # --------------------------------------------------------------------------
 @pytest.mark.parametrize("ts, secs, expected", [
-    (t(3, 17), 300, t(0)), (t(5), 300, t(5)), (t(4, 59), 300, t(0)),
-    (t(14, 59), 600, t(10)), (datetime(2026, 11, 16, 23, 59, 59), 300,
-                              datetime(2026, 11, 16, 23, 55)),
+    (t(3, 17), 300, t(3, 17)), (t(8, 16), 300, t(3, 17)), (t(8, 17), 300, t(8, 17)),
+    (t(14, 59), 600, t(13, 17)), (t(10, 17), 420, t(10, 17)),
 ])
-def test_window_start_is_clock_aligned(ts, secs, expected):
-    assert window_start(ts, secs) == expected
+def test_window_start_is_anchored_at_logger_start(ts, secs, expected):
+    assert window_start(ts, t(3, 17), secs) == expected
 
 
-@pytest.mark.parametrize("bad", [0, 59, 420, 300.0, True, "300"])
+@pytest.mark.parametrize("bad", [0, 59, 300.0, True, "300"])
 def test_invalid_window_lengths_rejected(bad):
     with pytest.raises(ValueError):
         aggregate_windows([], bad)
@@ -45,6 +45,37 @@ def test_invalid_window_lengths_rejected(bad):
 
 def test_no_data_gives_no_windows():
     assert aggregate_windows([]) == []
+
+
+def test_windows_start_when_the_logger_starts_not_on_the_clock():
+    start = t(3, 17).replace(microsecond=500000)
+    rows = [ev(start, "agent_start"), ev(start, "active", "Code.exe"),
+            ev(t(9), "switched", "chrome.exe"), ev(t(14), "agent_stop")]
+    ws = aggregate_windows(rows)
+    assert [(w.window_start, w.window_end) for w in ws] == \
+        [(t(3, 17), t(8, 17)), (t(8, 17), t(13, 17)), (t(13, 17), t(18, 17))]
+    assert ws[0].observed_seconds == 299        # observed from 10:03:17.5
+    assert ws[1].app_seconds == {"Code.exe": 43, "chrome.exe": 257}
+    assert ws[2].observed_seconds == 43 and ws[2].complete
+
+
+def test_each_logger_run_starts_its_own_grid():
+    rows = [ev(t(0, 10), "agent_start"), ev(t(0, 10), "active", "Code.exe"),
+            ev(t(7), "agent_stop"),
+            ev(t(7, 40), "agent_start"), ev(t(7, 40), "active", "Code.exe"),
+            ev(t(13), "agent_stop")]
+    assert [w.window_start for w in aggregate_windows(rows)] == \
+        [t(0, 10), t(5, 10), t(7, 40), t(12, 40)]
+
+
+def test_running_run_is_observed_up_to_now_when_live():
+    rows = [ev(t(0), "agent_start"), ev(t(0), "active", "Code.exe"),
+            ev(t(1), "idle", "Code.exe")]                    # idle ever since
+    (w,) = aggregate_windows(rows)                            # not live: ends at last row
+    assert (w.observed_seconds, w.complete) == (60, False)
+    w0, w1 = aggregate_windows(rows, live_until=t(5, 30))
+    assert (w0.observed_seconds, w0.idle_seconds, w0.complete) == (300, 240, True)
+    assert (w1.observed_seconds, w1.complete) == (30, False)
 
 
 # --------------------------------------------------------------------------
@@ -69,9 +100,9 @@ def test_basic_window_features():
         "distinct_apps": 2, "app_seconds": {"Code.exe": 240, "chrome.exe": 60},
         "keyboard_count": 10, "mouse_count": 5,
     }
-    # last window: agent stopped at 10:06 -> partly observed, may still grow
+    # last window: agent stopped at 10:06 -> partly observed, but can no longer grow
     assert (w1.window_start, w1.observed_seconds, w1.coverage, w1.complete) == \
-        (t(5), 60, 0.2, False)
+        (t(5), 60, 0.2, True)
     assert w1.app_seconds == {"Code.exe": 60} and w1.switches_per_min == 0.0
 
 
@@ -225,3 +256,32 @@ def test_end_to_end_from_agent_logs():
     assert w0.keyboard_count + w1.keyboard_count == 60     # one key every 10 ticks, none lost
     assert w1.idle_seconds > 100 and w0.idle_seconds == 0
     assert w0.complete and w1.complete
+
+
+def test_agent_builds_windows_automatically_every_window_length():
+    store = EventStore(":memory:")
+    agent = Agent(store, InputCounter(), get_app=lambda: "Code.exe",
+                  get_idle=lambda: 0, window_seconds=300)
+    start = t(2, 45)
+    agent.begin(start)
+    for i in range(1, 300):
+        agent.step(start + timedelta(seconds=i))
+    assert stored_windows(store) == []                       # first boundary not reached
+    agent.step(start + timedelta(seconds=300))
+    (w,) = stored_windows(store)
+    assert (w.window_start, w.observed_seconds, w.complete) == (t(2, 45), 300, True)
+    for i in range(301, 421):
+        agent.step(start + timedelta(seconds=i))
+    agent.end(start + timedelta(seconds=420))                 # stop: final rebuild
+    assert [(w.window_start, w.observed_seconds, w.complete)
+            for w in stored_windows(store)] == [(t(2, 45), 300, True), (t(7, 45), 120, True)]
+
+
+def test_agent_without_window_seconds_never_builds_windows():
+    store = EventStore(":memory:")
+    agent = Agent(store, InputCounter(), get_app=lambda: "Code.exe", get_idle=lambda: 0)
+    agent.begin(t(0))
+    for i in range(1, 700):
+        agent.step(t(0, i))
+    agent.end(t(12))
+    assert stored_windows(store) == []

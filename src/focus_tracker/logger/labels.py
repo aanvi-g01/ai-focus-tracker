@@ -19,9 +19,8 @@ import sys
 from datetime import date, datetime, time
 from typing import List, Optional, Tuple
 
-from ..features.windows import (DEFAULT_WINDOW_SECONDS, Window, get_window,
-                                refresh_windows, stored_windows, validate_window_seconds,
-                                window_start)
+from ..features.windows import (DEFAULT_WINDOW_SECONDS, Window, find_window,
+                                refresh_windows, stored_windows, validate_window_seconds)
 from .storage import EventStore
 
 LABELS = ("Focused", "Distracted", "Inactive")
@@ -61,38 +60,51 @@ def get_label(store, start: datetime, window_seconds=DEFAULT_WINDOW_SECONDS) -> 
     return row[0] if row else None
 
 
+LABEL_SOURCES = ("user", "accepted")
+
+
 def set_label(store, when: datetime, label, now: datetime,
-              window_seconds=DEFAULT_WINDOW_SECONDS) -> Tuple[Window, Optional[str]]:
+              window_seconds=DEFAULT_WINDOW_SECONDS,
+              source="user") -> Tuple[Window, Optional[str]]:
     """Label the window containing `when`. Returns (window, previous label).
+
+    `source` is "user" when the person chose the label and "accepted" when they
+    confirmed the model's guess. Both are the person's decision; accepted ones
+    are kept apart so models are never trained on their own guesses.
 
     The window must exist in the `windows` table (refresh first) and be
     complete: a window still in progress may change after being labelled.
     """
     label = normalize_label(label)
-    start = window_start(when, window_seconds)
-    w = get_window(store, start, window_seconds)
+    if source not in LABEL_SOURCES:
+        raise LabelError(f"source must be one of {', '.join(LABEL_SOURCES)}")
+    w = find_window(store, when, window_seconds)
     if w is None:
-        raise LabelError(f"no recorded activity in the window starting {start:%Y-%m-%d %H:%M}")
+        raise LabelError(f"no recorded activity in a window at {when:%Y-%m-%d %H:%M:%S}")
+    start = w.window_start
     if not w.complete:
-        raise LabelError(f"the window starting {start:%H:%M} is still in progress")
+        raise LabelError(f"the window starting {start:%H:%M:%S} is still in progress")
     previous = get_label(store, start, window_seconds)
     with store.conn:
         store.conn.execute(
             "INSERT INTO window_labels (window_start, window_seconds, session_id, label,"
-            " labelled_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)"
+            " labelled_at, updated_at, source) VALUES (?, ?, ?, ?, ?, ?, ?)"
             " ON CONFLICT (window_start, window_seconds) DO UPDATE SET"
             " label = excluded.label, session_id = excluded.session_id,"
-            " updated_at = excluded.updated_at",
-            (_ts(start), window_seconds, w.session_id, label, _ts(now), _ts(now)))
+            " updated_at = excluded.updated_at, source = excluded.source",
+            (_ts(start), window_seconds, w.session_id, label, _ts(now), _ts(now), source))
     return w, previous
 
 
 def clear_label(store, when: datetime, window_seconds=DEFAULT_WINDOW_SECONDS) -> bool:
     """Remove the label of the window containing `when`. True if one existed."""
+    w = find_window(store, when, window_seconds)
+    if w is None:
+        return False
     with store.conn:
         cur = store.conn.execute(
             "DELETE FROM window_labels WHERE window_start = ? AND window_seconds = ?",
-            (_ts(window_start(when, window_seconds)), window_seconds))
+            (_ts(w.window_start), window_seconds))
     return cur.rowcount > 0
 
 
@@ -125,7 +137,7 @@ def _describe(w: Window, label: Optional[str]) -> str:
     elif w.coverage < 1:
         notes.append(f"partial {w.coverage:.0%}")
     session = f"#{w.session_id}" if w.session_id is not None else "-"
-    return (f"{w.window_start:%Y-%m-%d %H:%M}-{w.window_end:%H:%M}  {session:>4}  "
+    return (f"{w.window_start:%Y-%m-%d %H:%M:%S}-{w.window_end:%H:%M:%S}  {session:>4}  "
             f"active {w.active_seconds:>3}s idle {w.idle_seconds:>3}s  "
             f"switches {w.switch_count:>2}  keys {w.keyboard_count:>4} mouse {w.mouse_count:>5}  "
             f"{top:<16} {label or '(unlabelled)'}"
@@ -145,10 +157,10 @@ def main(argv=None, now: Optional[datetime] = None):
     ls.add_argument("--all", action="store_true", help="every date")
     ls.add_argument("--unlabelled", action="store_true")
     st = sub.add_parser("set", help="add or correct the label of a window")
-    st.add_argument("when", help='window start, e.g. 10:05 or "2026-11-16 10:05"')
+    st.add_argument("when", help='any time inside the window, e.g. 10:05 or "2026-11-16 10:05"')
     st.add_argument("label", help=" | ".join(LABELS) + " (any case)")
     cl = sub.add_parser("clear", help="remove the label of a window")
-    cl.add_argument("when")
+    cl.add_argument("when", help="any time inside the window")
     args = p.parse_args(argv)
 
     now = now or datetime.now()

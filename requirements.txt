@@ -1,7 +1,20 @@
+# Runtime dependencies (mirrors pyproject.toml; prefer `pip install -e .[app,ml]`).
+# Logger
 psutil>=5.9
 pynput>=1.7
 pyobjc-framework-Cocoa>=10.0; sys_platform == "darwin"
 pyobjc-framework-Quartz>=10.0; sys_platform == "darwin"
+# App / API  (extra: app)
+fastapi>=0.110
+uvicorn>=0.29
+python-multipart>=0.0.9
+httpx>=0.27
+# Machine learning  (extra: ml; the HMM is implemented in-house)
+numpy>=1.26
+pandas>=2.1
+scikit-learn>=1.4
+lightgbm>=4.3
+shap>=0.45
+matplotlib>=3.8
+# Tests
 pytest>=8.0
-# added in later weeks:
-# pandas, scikit-learn, hmmlearn, xgboost, shap, fastapi, uvicorn
