@@ -35,9 +35,9 @@ insights, dashboard).
 | UC-14 | Label a window | User | Implemented |
 | UC-15 | Correct or remove a label | User | Implemented |
 | UC-16 | Relate the session task to browser content | Aggregation pipeline | Implemented |
-| UC-17 | Learn a personal baseline | Focus classifier | Planned |
-| UC-18 | Classify focus state per window | Focus classifier | Planned |
-| UC-19 | Explain a classification | User | Planned |
+| UC-17 | Learn a personal baseline | Focus classifier | Implemented |
+| UC-18 | Classify focus state per window | Focus classifier | Implemented (`focus-train`, Insights page) |
+| UC-19 | Explain a classification | User | Implemented (SHAP reasons per window; optional Groq LLM summary per day) |
 | UC-20 | View focus insights and dashboard | User | Planned |
 
 ---
@@ -142,8 +142,8 @@ insights, dashboard).
 ## C. Windows and self-labelling
 
 ### UC-12 Aggregate activity into 5-minute windows
-- **Actor:** Aggregation pipeline (run automatically by `focus-label`)
-- **Goal:** Turn the raw event stream into one structured record per clock-aligned window (10:00–10:05, …; length configurable).
+- **Actor:** Aggregation pipeline (run automatically by `focus-logger` every window length while it runs and once when it stops, and by `focus-label`)
+- **Goal:** Turn the raw event stream into one structured record per window, counted from the moment the logger started (a start at 10:03:17 gives 10:03:17–10:08:17, 10:08:17–10:13:17, …; each logger run starts a new grid; length configurable with `--window-seconds`).
 - **Features per window:**
   - active seconds, idle seconds and idle episodes
   - app switches, website switches and switches per minute
@@ -153,7 +153,7 @@ insights, dashboard).
 - **Missing and incomplete data:**
   - Time when the logger was off is reported as `observed_seconds` / `coverage`, never as active or idle.
   - Windows with no data are omitted.
-  - The window still in progress is flagged `complete = false`.
+  - The window still in progress is flagged `complete = false`. Once the logger stops, its last (shorter) window is complete, because it can no longer grow.
   - A window belongs to a session only if the session covers most of its observed time.
 - **Postconditions:** The `windows` table is rebuilt. It can be regenerated at any time and never affects labels.
 
@@ -192,16 +192,16 @@ insights, dashboard).
 The repository has placeholder packages for these (`baseline/`, `models/`,
 `explain/`, `insights/`, `api/`, `dashboard/`).
 
-### UC-17 Learn a personal baseline *(planned)*
+### UC-17 Learn a personal baseline *(implemented)*
 - **Actor:** Focus classifier
 - **Goal:** Learn what *normal* looks like for this user (typical switch rate, input intensity, idle patterns), so that features are judged relative to the user rather than a global average.
 
-### UC-18 Classify focus state per window *(planned)*
+### UC-18 Classify focus state per window *(implemented)*
 - **Actor:** Focus classifier
 - **Main flow:** Train on windows the user labelled (UC-14), then predict Focused / Distracted / Inactive for unlabelled windows, using window features (UC-12), session context (UC-16) and the personal baseline (UC-17).
 - **Alternate flow:** Too few labels → the system asks the user to label more windows instead of guessing.
 
-### UC-19 Explain a classification *(planned)*
+### UC-19 Explain a classification *(implemented)*
 - **Actor:** User
 - **Goal:** Understand *why* a window was classified a certain way (e.g. "high switch rate and mostly entertainment content compared with your usual coding sessions").
 - **Privacy:** Only structured summaries, never raw logs, may be sent to an external LLM for wording.

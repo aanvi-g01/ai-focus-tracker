@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Focus Tracker: Quick Guide</title>
+<style>
+  @page { size: A4; margin: 14mm 14mm 12mm; }
+  body { font: 10.5pt/1.45 "Segoe UI", Arial, sans-serif; color: #1f2330; margin: 0; }
+  h1 { font-size: 20pt; color: #3730a3; margin: 0 0 2px; }
+  .sub { color: #555; margin: 0 0 10px; }
+  h2 { font-size: 12.5pt; margin: 12px 0 4px; color: #1f2330; display: flex; gap: 8px; align-items: center; }
+  .n { background: #3730a3; color: #fff; border-radius: 50%; width: 20px; height: 20px; display: inline-flex;
+       align-items: center; justify-content: center; font-size: 10pt; flex: none; }
+  p, ul, ol { margin: 3px 0; }
+  ul, ol { padding-left: 20px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+  img { width: 100%; border: 1px solid #ccd; border-radius: 6px; }
+  .cap { font-size: 8.5pt; color: #666; margin-top: 2px; }
+  .warn { background: #fef3c7; border-left: 4px solid #b45309; padding: 6px 10px; border-radius: 4px; margin: 6px 0; }
+  .ok { background: #eef2ff; border-left: 4px solid #3730a3; padding: 6px 10px; border-radius: 4px; margin: 6px 0; }
+  .chip { display: inline-block; border-radius: 999px; padding: 0 8px; font-weight: 600; font-size: 9pt; }
+  .f { background: #d1fae5; color: #047857; } .d { background: #fef3c7; color: #b45309; } .i { background: #e2e8f0; color: #475569; }
+  kbd { border: 1px solid #aab; border-radius: 3px; padding: 0 4px; font-size: 9pt; background: #f6f7fb; }
+  table { border-collapse: collapse; width: 100%; font-size: 9.5pt; }
+  td, th { border-bottom: 1px solid #e5e7eb; padding: 3px 6px; text-align: left; vertical-align: top; }
+  .page2 { break-before: page; }
+  .fill { border-bottom: 1px solid #888; display: inline-block; min-width: 150px; }
+</style>
+</head>
+<body>
+<h1>Focus Tracker: Quick Guide</h1>
+<p class="sub">For participants. About 5 minutes to set up, then 2 minutes of labelling per hour you work.
+  Your participant code: <span class="fill">&nbsp;</span> &nbsp; Send your file to: <span class="fill">&nbsp;</span></p>
+
+<h2><span class="n">1</span> Open it the first time</h2>
+<ol>
+  <li>Save <strong>FocusTracker.exe</strong> somewhere you'll keep it, for example your <em>Documents</em> folder.</li>
+  <li>Double-click it. Windows will probably show a blue box: <strong>"Windows protected your PC"</strong>.
+      Click <strong>More info</strong>, then <strong>Run anyway</strong>.</li>
+  <li>Your browser opens the Focus Tracker page. A <strong>Focus Tracker</strong> icon also appears on your desktop.</li>
+</ol>
+<div class="warn"><strong>If nothing happens, or your antivirus says it removed a threat:</strong> this is a false alarm,
+  because the app counts key presses (never which keys). Don't try to fix it alone: ask the team member who gave you the file.
+  (In Windows Security: <em>Virus &amp; threat protection → Protection history</em> → the item → <em>Allow</em>.)</div>
+
+<div class="two">
+  <div>
+    <h2><span class="n">2</span> Welcome screen (only once)</h2>
+    <ol>
+      <li>Type the <strong>participant code</strong> your team gave you (like <strong>P3</strong>). Not your name.</li>
+      <li>Tick <strong>Start automatically when Windows starts</strong> (recommended).</li>
+      <li>Tick <strong>I understand…</strong> and press <strong>Save and start recording</strong>.</li>
+    </ol>
+    <div class="ok">Recording has started. You can <strong>close the browser tab</strong>: it keeps recording in the background.</div>
+  </div>
+  <div>
+    <img src="onboarding.png" alt="Welcome screen">
+    <div class="cap">The welcome screen.</div>
+  </div>
+</div>
+
+<h2><span class="n">3</span> Every day</h2>
+<ul>
+  <li>The app starts with Windows (if you ticked the box). Otherwise, double-click <strong>Focus Tracker</strong> on your desktop.</li>
+  <li>Check that the page says <strong>Recording since …</strong> with a green dot. If it says <em>Not recording</em>, press <strong>Start logging</strong>.</li>
+  <li>Keep it running during breaks too. That's how the app learns what "Inactive" looks like.</li>
+  <li><em>Optional:</em> when you sit down to work, type what you'll do in <strong>Focus session</strong> (e.g. "studying DSA") and press Start session.</li>
+</ul>
+
+<div class="page2"></div>
+<h2><span class="n">4</span> Label your windows (once or twice a day)</h2>
+<p>The app splits your time into <strong>5-minute windows</strong>. For each one, say what you were mostly doing.
+  Do it <strong>the same day</strong>, ideally right after you finish working: you'll remember better.</p>
+<img src="collect.png" alt="Labelling page" style="width:84%">
+<div class="cap">Click a row to select it; hold <kbd>Shift</kbd> and click another row to select everything in between. Then press a button (or a key).</div>
+<table style="margin-top:6px">
+  <tr><th style="width:24%">Label</th><th>Use it when, for most of the 5 minutes, you were…</th><th style="width:10%">Key</th></tr>
+  <tr><td><span class="chip f">Focused</span></td><td>doing what you meant to do. <strong>Reading or watching a lecture counts</strong>, even without typing.</td><td><kbd>F</kbd></td></tr>
+  <tr><td><span class="chip d">Distracted</span></td><td>on the computer but off-task: social media, unrelated videos, jumping between tabs.</td><td><kbd>D</kbd></td></tr>
+  <tr><td><span class="chip i">Inactive</span></td><td>away from the computer, or on your phone.</td><td><kbd>I</kbd></td></tr>
+  <tr><td>Not sure / mixed</td><td><strong>Leave it unlabelled.</strong> A wrong label is worse than no label.</td><td></td></tr>
+</table>
+<p class="cap">Made a mistake? Select the window and press another label, or <kbd>C</kbd> to clear it. Grey rows are still in progress and can be labelled after they finish.
+  The bars at the top count your labels; the team aims for about 40 of each.</p>
+
+<h2><span class="n">5</span> Send your data to the team</h2>
+<ol>
+  <li>Scroll down to <strong>Export for the team</strong> and press <strong>Export my labelled windows</strong>.</li>
+  <li>A file named like <code>focus_windows_P3_….csv</code> appears in your <strong>Downloads</strong> folder.</li>
+  <li>Send that file to the person named at the top of this guide (WhatsApp, email or Drive). Do this when they ask, e.g. every evening.</li>
+</ol>
+<div class="ok">The file contains the numbers, your labels, the <strong>websites</strong> you visited and any
+  <strong>video titles</strong> recorded in each window and the <strong>apps</strong> you used, so your team will see them. It never contains what you typed.
+  (To stop recording video titles, untick "video titles" before pressing Start logging.)</div>
+
+<h2><span class="n">6</span> Stopping, and if something goes wrong</h2>
+<table>
+  <tr><td style="width:36%"><strong>Stop recording for now</strong></td><td>Press <strong>Stop logging</strong>. To quit completely, press <strong>Quit app</strong> (top right).</td></tr>
+  <tr><td><strong>Page won't open / "can't reach"</strong></td><td>Double-click <strong>Focus Tracker</strong> on the desktop again.</td></tr>
+  <tr><td><strong>An error message appears</strong></td><td>Send the file it names (<code>app.log</code>) to your team.</td></tr>
+  <tr><td><strong>Where is my data?</strong></td><td>Only on this computer, in <code>%LOCALAPPDATA%\FocusTracker</code>. Nothing is uploaded.</td></tr>
+  <tr><td><strong>Finished taking part</strong></td><td>Export once more, press <strong>Quit app</strong>, untick "Start automatically" first if you ticked it, then delete the app and that folder.</td></tr>
+</table>
+</body>
+</html>
