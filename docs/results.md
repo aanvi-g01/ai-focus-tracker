@@ -126,3 +126,21 @@ focus-train --data data/participants --out models --eval-out results/run2
 python -m focus_tracker.models.robustness --data data/participants --out results/run2 \
     --relabel <old_export.csv> <new_export.csv>
 ```
+
+## Figures (`docs/results/run2/figures/`, made by `scripts/make_report_figures.py`)
+
+| File | Shows |
+|---|---|
+| `fig_architecture.png` | System data flow: logger → windows → self-labels → models → app, explanations, evaluation |
+| `fig_label_distribution.png` | Self-labelled windows per participant and label |
+| `fig_model_comparison.png` | Macro-F1 and per-class F1 of the four models (time split) |
+| `fig_lopo.png` | Leave-one-participant-out macro-F1 per held-out participant |
+| `fig_rq3_low_activity.png` | RQ3: Focused recall on low-activity windows |
+| `fig_seed_stability.png` | RQ1 across 5 random seeds |
+| `fig_time_ablation.png` | With vs without time-of-day features |
+| `fig_focused_vs_distracted.png` | Two-class (Focused vs Distracted) results |
+| `fig_personal_vs_shared.png` | Personal vs shared models, mean accuracy |
+| `fig_personal_per_person.png` | Personal vs shared, per person |
+| `fig_synthetic_data.png` | Real vs real + synthetic training data |
+
+The original run folder also has `confusion_matrices.png`, `per_participant_f1.png` and `shap_importance.png`. The underlying numbers for every figure are in the JSON/CSV files next to them.
