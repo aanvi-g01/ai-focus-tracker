@@ -1,0 +1,493 @@
+{
+  "config": {
+    "alpha": 0.05,
+    "seed": 0,
+    "test_fraction": 0.3,
+    "low_activity_idle_share": 0.6,
+    "rule_thresholds": {
+      "t_idle": 0.95,
+      "t_ent": 0.6,
+      "t_switch": 8.0
+    },
+    "gbt_params": {
+      "num_leaves": 15,
+      "n_estimators": 400
+    }
+  },
+  "warnings": [],
+  "data": {
+    "participants": {
+      "P01": {
+        "windows": 43,
+        "days": 1,
+        "labels": {
+          "Focused": 33,
+          "Distracted": 9,
+          "Inactive": 1
+        },
+        "train": 30,
+        "test": 12
+      },
+      "P02": {
+        "windows": 88,
+        "days": 3,
+        "labels": {
+          "Focused": 3,
+          "Distracted": 85,
+          "Inactive": 0
+        },
+        "train": 23,
+        "test": 65
+      },
+      "P03": {
+        "windows": 26,
+        "days": 2,
+        "labels": {
+          "Focused": 18,
+          "Distracted": 8,
+          "Inactive": 0
+        },
+        "train": 12,
+        "test": 14
+      },
+      "P04": {
+        "windows": 23,
+        "days": 2,
+        "labels": {
+          "Focused": 18,
+          "Distracted": 5,
+          "Inactive": 0
+        },
+        "train": 11,
+        "test": 12
+      },
+      "P05": {
+        "windows": 24,
+        "days": 2,
+        "labels": {
+          "Focused": 19,
+          "Distracted": 5,
+          "Inactive": 0
+        },
+        "train": 1,
+        "test": 23
+      },
+      "P06": {
+        "windows": 20,
+        "days": 1,
+        "labels": {
+          "Focused": 20,
+          "Distracted": 0,
+          "Inactive": 0
+        },
+        "train": 14,
+        "test": 5
+      },
+      "P07": {
+        "windows": 16,
+        "days": 1,
+        "labels": {
+          "Focused": 10,
+          "Distracted": 3,
+          "Inactive": 3
+        },
+        "train": 11,
+        "test": 4
+      },
+      "P08": {
+        "windows": 25,
+        "days": 1,
+        "labels": {
+          "Focused": 18,
+          "Distracted": 7,
+          "Inactive": 0
+        },
+        "train": 17,
+        "test": 7
+      },
+      "P09": {
+        "windows": 93,
+        "days": 3,
+        "labels": {
+          "Focused": 52,
+          "Distracted": 25,
+          "Inactive": 16
+        },
+        "train": 72,
+        "test": 21
+      },
+      "P10": {
+        "windows": 296,
+        "days": 3,
+        "labels": {
+          "Focused": 90,
+          "Distracted": 13,
+          "Inactive": 193
+        },
+        "train": 241,
+        "test": 55
+      }
+    },
+    "total_windows": 654,
+    "train_windows": 432,
+    "test_windows": 218
+  },
+  "models": {
+    "rule": {
+      "n": 218,
+      "macro_f1": 0.25121143871143875,
+      "accuracy": 0.44954128440366975,
+      "classes_in_test": [
+        "Focused",
+        "Distracted",
+        "Inactive"
+      ],
+      "per_class": {
+        "Focused": {
+          "precision": 0.5307,
+          "recall": 0.812,
+          "f1": 0.6419,
+          "support": 117
+        },
+        "Distracted": {
+          "precision": 0.5,
+          "recall": 0.0106,
+          "f1": 0.0208,
+          "support": 94
+        },
+        "Inactive": {
+          "precision": 0.0541,
+          "recall": 0.2857,
+          "f1": 0.0909,
+          "support": 7
+        }
+      },
+      "confusion": [
+        [
+          95,
+          1,
+          21
+        ],
+        [
+          79,
+          1,
+          14
+        ],
+        [
+          5,
+          0,
+          2
+        ]
+      ],
+      "macro_f1_ci95": [
+        0.209,
+        0.3002
+      ],
+      "per_participant": {
+        "P01": 0.4326923076923077,
+        "P02": 0.0,
+        "P03": 0.4,
+        "P04": 0.45454545454545453,
+        "P05": 0.25,
+        "P06": 1.0,
+        "P07": 1.0,
+        "P08": 0.7272727272727273,
+        "P09": 0.19753086419753085,
+        "P10": 0.46601941747572817
+      }
+    },
+    "gbt_raw": {
+      "n": 218,
+      "macro_f1": 0.3498242287790813,
+      "accuracy": 0.5137614678899083,
+      "classes_in_test": [
+        "Focused",
+        "Distracted",
+        "Inactive"
+      ],
+      "per_class": {
+        "Focused": {
+          "precision": 0.546,
+          "recall": 0.812,
+          "f1": 0.6529,
+          "support": 117
+        },
+        "Distracted": {
+          "precision": 0.6818,
+          "recall": 0.1596,
+          "f1": 0.2586,
+          "support": 94
+        },
+        "Inactive": {
+          "precision": 0.0909,
+          "recall": 0.2857,
+          "f1": 0.1379,
+          "support": 7
+        }
+      },
+      "confusion": [
+        [
+          95,
+          7,
+          15
+        ],
+        [
+          74,
+          15,
+          5
+        ],
+        [
+          5,
+          0,
+          2
+        ]
+      ],
+      "macro_f1_ci95": [
+        0.2807,
+        0.4236
+      ],
+      "per_participant": {
+        "P01": 0.29411764705882354,
+        "P02": 0.375,
+        "P03": 0.391304347826087,
+        "P04": 0.4,
+        "P05": 0.18181818181818182,
+        "P06": 1.0,
+        "P07": 1.0,
+        "P08": 0.8333333333333334,
+        "P09": 0.21505376344086022,
+        "P10": 0.46078431372549017
+      }
+    },
+    "gbt_z": {
+      "n": 218,
+      "macro_f1": 0.44634377967711303,
+      "accuracy": 0.6513761467889908,
+      "classes_in_test": [
+        "Focused",
+        "Distracted",
+        "Inactive"
+      ],
+      "per_class": {
+        "Focused": {
+          "precision": 0.6928,
+          "recall": 0.906,
+          "f1": 0.7852,
+          "support": 117
+        },
+        "Distracted": {
+          "precision": 1.0,
+          "recall": 0.383,
+          "f1": 0.5538,
+          "support": 94
+        },
+        "Inactive": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 7
+        }
+      },
+      "confusion": [
+        [
+          106,
+          0,
+          11
+        ],
+        [
+          40,
+          36,
+          18
+        ],
+        [
+          7,
+          0,
+          0
+        ]
+      ],
+      "macro_f1_ci95": [
+        0.4044,
+        0.4918
+      ],
+      "per_participant": {
+        "P01": 0.5555555555555556,
+        "P02": 0.6868686868686869,
+        "P03": 0.391304347826087,
+        "P04": 0.47619047619047616,
+        "P05": 0.3448275862068966,
+        "P06": 1.0,
+        "P07": 0.3333333333333333,
+        "P08": 0.9230769230769231,
+        "P09": 0.22916666666666666,
+        "P10": 0.46601941747572817
+      }
+    },
+    "hmm": {
+      "n": 218,
+      "macro_f1": 0.2235116404665238,
+      "accuracy": 0.3394495412844037,
+      "classes_in_test": [
+        "Focused",
+        "Distracted",
+        "Inactive"
+      ],
+      "per_class": {
+        "Focused": {
+          "precision": 0.4786,
+          "recall": 0.5726,
+          "f1": 0.5214,
+          "support": 117
+        },
+        "Distracted": {
+          "precision": 0.4167,
+          "recall": 0.0532,
+          "f1": 0.0943,
+          "support": 94
+        },
+        "Inactive": {
+          "precision": 0.0303,
+          "recall": 0.2857,
+          "f1": 0.0548,
+          "support": 7
+        }
+      },
+      "confusion": [
+        [
+          67,
+          7,
+          43
+        ],
+        [
+          68,
+          5,
+          21
+        ],
+        [
+          5,
+          0,
+          2
+        ]
+      ],
+      "macro_f1_ci95": [
+        0.1763,
+        0.2679
+      ],
+      "per_participant": {
+        "P01": 0.4818181818181818,
+        "P02": 0.0,
+        "P03": 0.3205128205128205,
+        "P04": 0.45454545454545453,
+        "P05": 0.18181818181818182,
+        "P06": 1.0,
+        "P07": 1.0,
+        "P08": 0.0,
+        "P09": 0.12121212121212122,
+        "P10": 0.5380434782608696
+      }
+    }
+  },
+  "rq2_learned_vs_rule": {
+    "gbt_z_vs_rule": {
+      "delta_f1": 0.1951,
+      "mcnemar": {
+        "b": 49,
+        "c": 5,
+        "p_value": 3.8913883226854296e-10
+      }
+    },
+    "hmm_vs_rule": {
+      "delta_f1": -0.0277,
+      "mcnemar": {
+        "b": 4,
+        "c": 28,
+        "p_value": 1.9301194697618484e-05
+      }
+    }
+  },
+  "rq1_personal_baseline": {
+    "z_vs_raw": {
+      "delta_f1": 0.0965,
+      "mcnemar": {
+        "b": 38,
+        "c": 8,
+        "p_value": 9.24769992138863e-06
+      }
+    },
+    "alpha_sensitivity_macro_f1": {
+      "0.02": 0.38107593841895865,
+      "0.05": 0.44634377967711303,
+      "0.1": 0.42981578728015335
+    }
+  },
+  "rq3_low_activity": {
+    "n_windows": 51,
+    "recall_focused": {
+      "rule": 0.5882,
+      "gbt_raw": 0.6471,
+      "gbt_z": 0.7843,
+      "hmm": 0.1765
+    }
+  },
+  "lopo": {
+    "P01": {
+      "rule": 0.5030529172320217,
+      "gbt_raw": 0.3538647342995169,
+      "gbt_z": 0.5053272450532724,
+      "hmm": 0.3154228855721393
+    },
+    "P02": {
+      "rule": 0.053763440860215055,
+      "gbt_raw": 0.2727272727272727,
+      "gbt_z": 0.34523809523809523,
+      "hmm": 0.21428571428571427
+    },
+    "P03": {
+      "rule": 0.3333333333333333,
+      "gbt_raw": 0.3142857142857143,
+      "gbt_z": 0.4090909090909091,
+      "hmm": 0.3018181818181818
+    },
+    "P04": {
+      "rule": 0.3939393939393939,
+      "gbt_raw": 0.6282051282051282,
+      "gbt_z": 0.39473684210526316,
+      "hmm": 0.3333333333333333
+    },
+    "P05": {
+      "rule": 0.2692307692307692,
+      "gbt_raw": 0.2692307692307692,
+      "gbt_z": 0.2692307692307692,
+      "hmm": 0.17391304347826086
+    },
+    "P06": {
+      "rule": 0.09523809523809523,
+      "gbt_raw": 1.0,
+      "gbt_z": 1.0,
+      "hmm": 1.0
+    },
+    "P07": {
+      "rule": 0.42063492063492064,
+      "gbt_raw": 0.24242424242424243,
+      "gbt_z": 0.33730158730158727,
+      "hmm": 0.3814814814814815
+    },
+    "P08": {
+      "rule": 0.37662337662337664,
+      "gbt_raw": 0.13793103448275862,
+      "gbt_z": 0.3633276740237691,
+      "hmm": 0.4043478260869565
+    },
+    "P09": {
+      "rule": 0.3511770880191933,
+      "gbt_raw": 0.2906204906204906,
+      "gbt_z": 0.1717171717171717,
+      "hmm": 0.3185185185185185
+    },
+    "P10": {
+      "rule": 0.5988506066242817,
+      "gbt_raw": 0.17760330578512398,
+      "gbt_z": 0.2557691305933219,
+      "hmm": 0.444120178546408
+    }
+  }
+}

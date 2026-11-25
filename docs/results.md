@@ -1,6 +1,6 @@
 # Focus-state classification: results
 
-Final run: `results/run2/` (main evaluation, `summary.md`) and `results/run2/robustness.md`.
+Final run: [`docs/results/run2/`](results/run2/) holds the full outputs (summary, robustness checks, per-window predictions, SHAP, personal-model check, plots). It is an anonymised copy made by `scripts/anonymise_results.py`: participants are P01–P10, the tester outside the study is X1, and exact window times are removed. The original `results/run2/` stays on the team's machine.
 Final model: `models/20261126_003136/` (LightGBM with personal z-scores, trained on all windows).
 Participants are not named here; per-participant tables are in the run folder.
 
